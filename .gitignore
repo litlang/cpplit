@@ -1,0 +1,7 @@
+/build
+/bin
+/dist
+
+*.old
+*.old.cpp
+*.old.hpp
