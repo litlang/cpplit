@@ -2,7 +2,14 @@
 
 #include "parser/parse_expression.hpp"
 
-#include "parser/parse_keyword.hpp"
+#include "parser/parse_if.hpp"
+#include "parser/loop/parse_loop.hpp"
+
+
+statement* parse_expr_statement(token_list& Token_list) {
+	expr* Expr = parse_expression(Token_list);
+	return new expr_statement { Expr, Expr->BEGIN, Expr->END };
+}
 
 statement* parse_statement(token_list& Token_list) {
 	if (dynamic_cast<token_identifier*> (Token_list.this_()) != NULL && Token_list.peek()->TYPE == token_type::EQUAL) {
@@ -14,11 +21,33 @@ statement* parse_statement(token_list& Token_list) {
 	}
 
 	else if (dynamic_cast<token_keyword*> (Token_list.this_()) != NULL) {
-		return parse_statement_keyword(Token_list);
+
+		token_keyword::type keyword = dynamic_cast<token_keyword*> (Token_list.this_()) -> Type;
+		Token_list.next();
+
+		if (keyword == token_keyword::type::IF) {
+			return parse_ifs(Token_list);
+		}
+
+		else if (keyword == token_keyword::type::ELSE_IF) {
+			throw L"'else if' without privious 'if'";
+		}
+
+		else if (keyword == token_keyword::type::ELSE) {
+			throw L"'else' without privious 'if'";
+		}
+
+		else if (keyword == token_keyword::type::LOOP) {
+			return parse_loop(Token_list);
+		}
+
+		else {
+			Token_list.prev(); //!
+			return parse_expr_statement(Token_list);
+		}
 	}
 
-	else { // 有点草率？
-		expr* Expr = parse_expression(Token_list);
-		return new expr_statement { Expr, Expr->BEGIN, Expr->END };
+	else {
+		return parse_expr_statement(Token_list);
 	}
 }
