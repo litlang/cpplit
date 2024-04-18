@@ -6,11 +6,11 @@
 
 condition_loop* parse_condition_loop(token_list& Token_list) {
 
-	check_symbol(Token_list, token_symbol::type::PAREN_LEFT);
+	check_symbol::require(Token_list, token_symbol::type::PAREN_LEFT);
 	expr* Condition = parse_expression(Token_list);
-	check_symbol(Token_list, token_symbol::type::PAREN_RIGHT);
+	check_symbol::require(Token_list, token_symbol::type::PAREN_RIGHT);
 
-	check_symbol(Token_list, token_symbol::type::BRACE_LEFT);
+	check_symbol::require(Token_list, token_symbol::type::BRACE_LEFT);
 
 	statement_block* block = parse_statement_block(Token_list);
 

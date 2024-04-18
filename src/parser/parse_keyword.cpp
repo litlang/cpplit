@@ -11,11 +11,11 @@
 
 conditional_branch* parse_if(token_list& Token_list) {
 
-	check_symbol(Token_list, token_symbol::type::PAREN_LEFT);
+	check_symbol::require(Token_list, token_symbol::type::PAREN_LEFT);
 	expr* Condition = parse_expression(Token_list);
-	check_symbol(Token_list, token_symbol::type::PAREN_RIGHT);
+	check_symbol::require(Token_list, token_symbol::type::PAREN_RIGHT);
 
-	check_symbol(Token_list, token_symbol::type::BRACE_LEFT);
+	check_symbol::require(Token_list, token_symbol::type::BRACE_LEFT);
 
 	statement_block* block = parse_statement_block(Token_list);
 
@@ -24,7 +24,7 @@ conditional_branch* parse_if(token_list& Token_list) {
 
 conditional_branch* parse_else(token_list& Token_list) {
 
-	check_symbol(Token_list, token_symbol::type::BRACE_LEFT);
+	check_symbol::require(Token_list, token_symbol::type::BRACE_LEFT);
 
 	statement_block* block = parse_statement_block(Token_list);
 
@@ -37,7 +37,7 @@ conditional_branches* parse_ifs(token_list& Token_list) {
 	result.push_back(parse_if(Token_list));
 
 	while (true) {
-		if (check_symbol_if(Token_list.this_(), token_symbol::type::EOL_)) {
+		if (check_symbol::is(Token_list.this_(), token_symbol::type::EOL_)) {
 			Token_list.next();
 		}
 		else if (dynamic_cast<token_keyword*> (Token_list.this_()) != NULL && dynamic_cast<token_keyword*> (Token_list.this_())->Type == token_keyword::type::ELSE_IF) {
@@ -94,7 +94,7 @@ expr* parse_expression_keyword(token_list& Token_list) {
 	if (kw->Type == token_keyword::type::IMPORT) {
 		int begin = Token_list.this_()->BEGIN;
 
-		check_symbol(Token_list, token_symbol::type::PAREN_LEFT);
+		check_symbol::require(Token_list, token_symbol::type::PAREN_LEFT);
 
 		expr* path = parse_expression(Token_list);
 
@@ -107,7 +107,7 @@ expr* parse_expression_keyword(token_list& Token_list) {
 			throw "import path must be literal_string";
 		}// import()
 
-		check_symbol(Token_list, token_symbol::type::PAREN_RIGHT);
+		check_symbol::require(Token_list, token_symbol::type::PAREN_RIGHT);
 
 		return result;
 

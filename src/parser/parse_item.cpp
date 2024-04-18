@@ -44,9 +44,9 @@ expr* parse_miditem(token_list& Token_list) {
 		result = parse_expression_keyword(Token_list);
 	}
 
-	else if (check_symbol_if(first, token_symbol::type::PAREN_LEFT)) {
+	else if (check_symbol::is(first, token_symbol::type::PAREN_LEFT)) {
 		result = parse_expression(Token_list);
-		check_symbol(Token_list, token_symbol::type::PAREN_RIGHT);
+		check_symbol::require(Token_list, token_symbol::type::PAREN_RIGHT);
 	}
 	else {
 		throw "unknown symbol";
