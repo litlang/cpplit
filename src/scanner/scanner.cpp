@@ -33,7 +33,11 @@ ranges identifier_charset = {
 
 };
 
-static std::map<std::wstring, token_keyword::type> keyword_map = {
+ranges digit_charset = {
+	{ 48, 57 },
+};
+
+std::map<std::wstring, token_keyword::type> keyword_map = {
 
 // en-us
 	{ L"import", token_keyword::type::IMPORT },
@@ -64,7 +68,7 @@ static std::map<std::wstring, token_keyword::type> keyword_map = {
 
 };
 
-static std::map<std::wstring, bool> literal_bool_map = {
+std::map<std::wstring, bool> literal_bool_map = {
 
 // en-us
 	{ L"true", true },
@@ -77,23 +81,13 @@ static std::map<std::wstring, bool> literal_bool_map = {
 };
 
 
-bool is_num(wchar_t n) {
-
-	if (n >= 48 && n <= 57) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
 /*namespace pats {
 
 	std::wregex num(L"^[0-9]+(\\.[0-9]+)?");
 
 };*/
 
-static std::map<token_type, token_symbol::type> new_symbol_map = {
+std::map<token_type, token_symbol::type> new_symbol_map = {
 
 	{ token_type::AT, token_symbol::type::AT },
 	{ token_type::QUESTION, token_symbol::type::QUESTION },
@@ -288,7 +282,7 @@ token_list scan(std::wstring filepath) {
 		}
 
 		// entity.literal.number
-		else if (is_num(src[i])) {
+		else if (digit_charset.include(src[i])) {
 
 /*			std::wsmatch regres;
 			std::wstring matchfrom = src.substr(i);
