@@ -1,3 +1,3 @@
 #pragma once
 
-expr* parse_expression(token_list& Token_list, int& index);
+expr* parse_expression(token_list& Token_list);

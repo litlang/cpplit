@@ -4,7 +4,7 @@
 
 #include "ast/nodes.hpp"
 
-expr* parse_comparation(token_list& Token_list, int& index) {
+expr* parse_comparation(token_list& Token_list) {
 
 	static std::map<token_type, comparation::type> map = {
 		{ token_type::EQUAL_EQUAL, comparation::EQUAL },
@@ -17,7 +17,7 @@ expr* parse_comparation(token_list& Token_list, int& index) {
 	expr* result;
 	expr* left;
 
-	result = parse_arith(Token_list, index);
+	result = parse_arith(Token_list);
 
 	// token_symbol::type
 	if (map.find(Token_list.this_()->TYPE) != map.end()) {
@@ -28,7 +28,7 @@ expr* parse_comparation(token_list& Token_list, int& index) {
 			comparation::type comp_type = map[Token_list.this_()->TYPE];
 			Token_list.next();
 
-			expr* comp_item = parse_arith(Token_list, index);
+			expr* comp_item = parse_arith(Token_list);
 			right.push_back({ comp_type, comp_item });
 		} while (map.find(Token_list.this_()->TYPE) != map.end());
 

@@ -4,12 +4,12 @@
 #include "parser/parse_expression.hpp"
 #include "parser/check.hpp"
 
-arg_list* parse_callation(token_list& Token_list, int& index) {
+arg_list* parse_callation(token_list& Token_list) {
 	std::vector<expr*> result;
 
 	int begin = Token_list.this_()->BEGIN;
 	while (!check_symbol_if(Token_list.this_(), token_symbol::type::PAREN_RIGHT)) {
-		result.push_back(parse_expression(Token_list, index));
+		result.push_back(parse_expression(Token_list));
 
 		if (check_symbol_if(Token_list.this_(), token_symbol::type::COMMA)) {
 			Token_list.next();
@@ -26,13 +26,13 @@ arg_list* parse_callation(token_list& Token_list, int& index) {
 	return new arg_list { result, begin, end };
 }
 
-expr* parse_suffix(token_list& Token_list, int& index, expr* item) {
+expr* parse_suffix(token_list& Token_list, expr* item) {
 
 	while (true) {
 
 		if (check_symbol_if(Token_list.this_(), token_symbol::type::PAREN_LEFT)) {
 			Token_list.next();
-			auto caller = parse_callation(Token_list, index); // @index+1
+			auto caller = parse_callation(Token_list); // @index+1
 			item = new expr_callation { item, caller, item->BEGIN, caller->END };
 		}
 
