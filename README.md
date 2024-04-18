@@ -1,10 +1,9 @@
 # C++ Lit
 
-## Description
 Lit Implementation in C++
 
 ## Development Progress
-in parsing(completed, to optimize)
+in parsing(completed, optimizing)
 
 ## Contribution
 
@@ -12,10 +11,17 @@ in parsing(completed, to optimize)
 - Feedback
 - Donate
 
-##  Implementation Principle
+## Official Sites
+
+<https://lit.cure-x.net>
+
+### Docs
+
+<https://tutorial.lit.cure-x.net>
+
+####  Implementation Principle
 view at # how to write a code runner #
 
-## Official Site
 
 ## Donate Us
 
@@ -23,7 +29,7 @@ view at # how to write a code runner #
 
 ### by CMake
 ```sh
-git clone https://gitee.com/cure-dev/cpplit --depth 1
+git clone https://gitee.com/litlang/cpplit.git --depth 1
 cd cpplit
 mkdir build
 cd build
@@ -33,8 +39,14 @@ sudo make install
 
 ## With IDEs
 
+### Sublime Text
+
 ## Note!
 
-**DO NOT** clone the `dev` branch. Currently, only I am developing this branch. Sometimes I use --force to push, and I set the rule that only I can push on this branch. You are supposed to fork the `main` branch and create pull request.
+About Pull Request.
 
-~~Because I am lazy~~, I have not create a forked repository and I develop it on the same repository. If you want to be a contributor, please contact me by email.
+1. fork `main` branch of this repository.
+2. pull your forked repository to local.
+3. development and testing!
+4. create pull request.
+5. note that sync with this repository.
