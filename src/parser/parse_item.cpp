@@ -1,7 +1,6 @@
 #include "parser/parse_item.hpp"
 
 #include "parser/parse_suffix.hpp"
-#include "parser/parse_keyword.hpp"
 
 #include "parser/parse_expression.hpp"
 #include "parser/check.hpp"
@@ -30,6 +29,8 @@ expr_entity* make_entity(token_entity* Token) {
 
 }
 
+#include "parser/parse_import.hpp"
+#include "parser/namespace/parse_namespace.hpp"
 
 expr* parse_miditem(token_list& Token_list) {
 	expr* result;
@@ -40,16 +41,29 @@ expr* parse_miditem(token_list& Token_list) {
 	}
 
 	else if (dynamic_cast<token_keyword*> (first) != NULL) {
-		Token_list.prev(); //temp
-		result = parse_expression_keyword(Token_list);
+
+		token_keyword* kw = dynamic_cast<token_keyword*> (first);
+
+		if (kw->Type == token_keyword::type::IMPORT) {
+			result = parse_import(Token_list);
+		}
+
+		else if (kw->Type == token_keyword::type::NAMESPACE) {
+			result = parse_namespace(Token_list);
+		}
+
+		else {
+			throw L"not expr kw";
+		}
 	}
 
-	else if (check_symbol::is(first, token_symbol::type::PAREN_LEFT)) {
+	else if (check::symbol::is(first, token_symbol::type::PAREN_LEFT)) {
 		result = parse_expression(Token_list);
-		check_symbol::require(Token_list, token_symbol::type::PAREN_RIGHT);
+		check::symbol::require(Token_list, token_symbol::type::PAREN_RIGHT);
 	}
+
 	else {
-		throw "unknown symbol";
+		throw "unknown token";
 	}
 
 	result = parse_suffix(Token_list, result);

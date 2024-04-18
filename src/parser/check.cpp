@@ -1,7 +1,9 @@
 #include "parser/check.hpp"
 #include "exceptions/syntax_errors.hpp"
 
-namespace check_symbol {
+// check_token.cpp
+
+namespace check::symbol {
 
 	void require(token_list& Token_list, token_symbol::type Type) {
 		if (dynamic_cast<token_symbol*> (Token_list.this_()) != NULL && (dynamic_cast<token_symbol*> (Token_list.this_())) -> Type == Type) {
@@ -23,3 +25,15 @@ namespace check_symbol {
 
 };
 
+namespace check::keyword {
+
+	bool is(token* Token, token_keyword::type Type) {
+		if (dynamic_cast<token_keyword*> (Token) != NULL && (dynamic_cast<token_keyword*> (Token)) -> Type == Type) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+};

@@ -9,7 +9,7 @@ defination* parse_defination(token_list& Token_list) {
 		token_identifier* id = dynamic_cast<token_identifier*> (Token_list.this_());
 		Token_list.next();
 
-		if (check_symbol::is(Token_list.this_(), token_symbol::type::EQUAL)) {
+		if (check::symbol::is(Token_list.this_(), token_symbol::type::EQUAL)) {
 			Token_list.next();
 
 			auto val = parse_expression(Token_list);
@@ -29,14 +29,14 @@ defination_block* parse_defination_block(token_list& Token_list) {
 
 	std::vector<defination*> result;
 
-	while (!check_symbol::is(Token_list.this_(), token_symbol::type::BRACE_RIGHT)) {
+	while (!check::symbol::is(Token_list.this_(), token_symbol::type::BRACE_RIGHT)) {
 
-		if (check_symbol::is(Token_list.this_(), token_symbol::type::SEMICOLON) || check_symbol::is(Token_list.this_(), token_symbol::type::EOL_)) {
+		if (check::symbol::is(Token_list.this_(), token_symbol::type::SEMICOLON) || check::symbol::is(Token_list.this_(), token_symbol::type::EOL_)) {
 			Token_list.next();
 		}
 		else {
 			result.push_back(parse_defination(Token_list));
-			if (!check_symbol::is(Token_list.this_(), token_symbol::type::BRACE_RIGHT) && !check_symbol::is(Token_list.this_(), token_symbol::type::SEMICOLON) && !check_symbol::is(Token_list.this_(), token_symbol::type::EOL_)) {
+			if (!check::symbol::is(Token_list.this_(), token_symbol::type::BRACE_RIGHT) && !check::symbol::is(Token_list.this_(), token_symbol::type::SEMICOLON) && !check::symbol::is(Token_list.this_(), token_symbol::type::EOL_)) {
 				throw "unexpect token";
 			}
 		}
