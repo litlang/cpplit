@@ -31,7 +31,7 @@ expr_entity* make_entity(token_entity* Token) {
 }
 
 
-expr* parse_miditem(token_list& Token_list, int& index) {
+expr* parse_miditem(token_list& Token_list) {
 	expr* result;
 
 	token* first = Token_list.fetch();
@@ -41,18 +41,18 @@ expr* parse_miditem(token_list& Token_list, int& index) {
 
 	else if (dynamic_cast<token_keyword*> (first) != NULL) {
 		Token_list.prev(); //temp
-		result = parse_expression_keyword(Token_list, index);
+		result = parse_expression_keyword(Token_list);
 	}
 
 	else if (check_symbol_if(first, token_symbol::type::PAREN_LEFT)) {
-		result = parse_expression(Token_list, index);
-		check_symbol(Token_list, index, token_symbol::type::PAREN_RIGHT);
+		result = parse_expression(Token_list);
+		check_symbol(Token_list, token_symbol::type::PAREN_RIGHT);
 	}
 	else {
 		throw "unknown symbol";
 	}
 
-	result = parse_suffix(Token_list, index, result);
+	result = parse_suffix(Token_list, result);
 
 	return result;
 }
