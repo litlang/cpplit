@@ -21,7 +21,7 @@ statement_block* parse_statements(token_list& Token_list, token_type terminator)
 				Token_list.this_()->TYPE != token_type::EOL_       &&
 				Token_list.this_()->TYPE != terminator) {
 
-				throw new unexpect_token {2,1};
+				throw new unexpect_token {2,1}; // expect semicolon, eol or }.
 			}
 		}
 

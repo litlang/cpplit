@@ -10,7 +10,7 @@ public:
 
 		AT,
 		QUESTION,
-		NOT, // !
+		NOT, // ! exclam
 		XOR,
 		AND, // AMPERSAND &
 		OR, // BAR |
