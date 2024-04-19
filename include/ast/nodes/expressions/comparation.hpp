@@ -27,24 +27,13 @@ public:
 			{ LESS_EQUAL, L"≤" },
 		};
 
-		std::wstring result;
-		if (dynamic_cast<expr_entity*> (this->LEFT) != NULL) {
-			result += this->LEFT->view();
-		}
-		else {
-			result += L"(" + this->LEFT->view() + L")";
-		}
+		std::wstring result = L"(";
+		result += this->LEFT->view();
 
 		for (auto p : this->RIGHT) {
-			result += to_view[p.first];
-
-			if (dynamic_cast<expr_entity*> (p.second) != NULL) {
-				result += p.second->view();
-			}
-			else {
-				result += L"(" + p.second->view() + L")";
-			}
+			result += to_view[p.first] + p.second->view();
 		}
+		result += L")";
 
 		return result;
 	}
