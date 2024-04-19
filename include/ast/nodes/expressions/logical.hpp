@@ -41,3 +41,21 @@ public:
 };
 
 // NOT
+
+class logical_and : public expr {
+public:
+	logical_and(std::vector<expr*> items, int begin, int end) : expr(begin, end), items(items) {};
+
+	std::wstring view() {
+		std::wstring result = L"(";
+		for (expr* item : this->items) {
+			result += item->view() + L" && ";
+		}
+		result = result.substr(0, result.size()-4);
+		result += L")";
+		return result;
+	}
+
+private:
+	std::vector<expr*> items;
+};

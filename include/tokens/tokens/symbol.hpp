@@ -97,6 +97,9 @@ public:
 			{ token_symbol::type::AND, L"&" },
 			{ token_symbol::type::OR, L"|" },
 			{ token_symbol::type::XOR, L"\\" },
+			{ token_symbol::type::AND_AND, L"&&" },
+			{ token_symbol::type::OR_OR, L"||" },
+			{ token_symbol::type::XOR_XOR, L"\\\\" },
 
 
 			{ token_symbol::type::DOT, L"." },
