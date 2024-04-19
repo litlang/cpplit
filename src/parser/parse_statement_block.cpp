@@ -18,9 +18,10 @@ statement_block* parse_statements(token_list& Token_list, token_type terminator)
 			statement_list.push_back(parse_statement(Token_list));
 
 			if (Token_list.this_()->TYPE != token_type::SEMICOLON &&
-				Token_list.this_()->TYPE != token_type::EOL_       &&
+				Token_list.this_()->TYPE != token_type::EOL_      &&
 				Token_list.this_()->TYPE != terminator) {
 
+				if(dynamic_cast<token_keyword*>(Token_list.this_())!=NULL) throw 1;
 				throw new unexpect_token {2,1}; // expect semicolon, eol or }.
 			}
 		}

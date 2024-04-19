@@ -10,5 +10,5 @@ namespace check::symbol {
 };
 
 namespace check::keyword {
-	bool is(token* Token, token_symbol::type Type);
+	bool is(token* Token, token_keyword::type Type);
 };

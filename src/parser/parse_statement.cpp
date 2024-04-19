@@ -29,11 +29,11 @@ statement* parse_statement(token_list& Token_list) {
 		}
 
 		else if (keyword == token_keyword::type::ELSE_IF) {
-			throw L"'else if' without privious 'if'";
+			throw "'else if' without privious 'if'";
 		}
 
 		else if (keyword == token_keyword::type::ELSE) {
-			throw L"'else' without privious 'if'";
+			throw "'else' without privious 'if'";
 		}
 
 		else if (keyword == token_keyword::type::LOOP) {
