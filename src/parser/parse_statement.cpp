@@ -13,8 +13,7 @@ statement* parse_expr_statement(token_list& Token_list) {
 
 statement* parse_statement(token_list& Token_list) {
 	if (dynamic_cast<token_identifier*> (Token_list.this_()) != NULL && Token_list.peek()->TYPE == token_type::EQUAL) {
-		token_identifier* idn = dynamic_cast<token_identifier*> (Token_list.fetch()); // :=
-		// index += 2; // += -= ...
+		token_identifier* idn = dynamic_cast<token_identifier*> (Token_list.fetch());
 		Token_list.next();
 		expr* val = parse_expression(Token_list); // a = +1
 		return new defination { idn, val, idn->BEGIN, val->END };
@@ -30,11 +29,11 @@ statement* parse_statement(token_list& Token_list) {
 		}
 
 		else if (keyword == token_keyword::type::ELSE_IF) {
-			throw L"'else if' without privious 'if'";
+			throw "'else if' without privious 'if'";
 		}
 
 		else if (keyword == token_keyword::type::ELSE) {
-			throw L"'else' without privious 'if'";
+			throw "'else' without privious 'if'";
 		}
 
 		else if (keyword == token_keyword::type::LOOP) {

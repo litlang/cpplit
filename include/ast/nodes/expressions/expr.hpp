@@ -47,15 +47,11 @@ public:
 			{ type::negative, L"-" },
 		};
 
-		std::wstring op;
-		if (dynamic_cast<expr_entity*> (this->OPERAND) != NULL) {
-			op = this->OPERAND->view();
-		}
-		else {
-			op = L"(" + this->OPERAND->view() + L")";
-		}
+		std::wstring result = L"(";
+		result += view_map[this->Type] + this->OPERAND->view();
+		result += L")";
 
-		return view_map[this->Type] + op;
+		return result;
 	}
 };
 
@@ -82,21 +78,10 @@ public:
 			{ type::division, L"/" },
 		};
 
-		std::wstring left, right;
-		if (dynamic_cast<expr_entity*> (this->OPERAND_LEFT) != NULL) {
-			left = this->OPERAND_LEFT->view();
-		}
-		else {
-			left = L"(" + this->OPERAND_LEFT->view() + L")";
-		}
-
-		if (dynamic_cast<expr_entity*> (this->OPERAND_RIGHT) != NULL) {
-			right = this->OPERAND_RIGHT->view();
-		}
-		else {
-			right = L"(" + this->OPERAND_RIGHT->view() + L")";
-		}
-		return left + view_map[this->Type] + right;
+		std::wstring result = L"(";
+		result += this->OPERAND_LEFT->view() + view_map[this->Type] + this->OPERAND_RIGHT->view();
+		result += L")";
+		return result;
 	}
 };
 

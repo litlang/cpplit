@@ -1,6 +1,8 @@
 #include "parser/parse_prefix.hpp"
 #include "parser/parse_item.hpp"
 #include "parser/parse_arith.hpp"
+#include "parser/check.hpp"
+#include "parser/parse_comparation.hpp"
 
 expr* parse_prefix(token_list& Token_list) {
 	static std::map<token_type, unary_expr::type> unary_map = {
@@ -15,6 +17,12 @@ expr* parse_prefix(token_list& Token_list) {
 		auto val = parse_multi_divis(Token_list);
 		return new unary_expr { unary_map[first->TYPE], val, first->BEGIN, val->END };
 	}
+
+	else if (check::symbol::is(first, token_symbol::type::NOT)) {
+		Token_list.next();
+		return new logical_not { parse_comparation(Token_list), 0, 0 };
+	}
+
 	else {
 		return parse_miditem(Token_list);
 	}

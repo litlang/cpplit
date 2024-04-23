@@ -94,6 +94,9 @@ std::map<token_type, token_symbol::type> new_symbol_map = {
 	{ token_type::NOT, token_symbol::type::NOT },
 	{ token_type::AND, token_symbol::type::AND },
 	{ token_type::OR, token_symbol::type::OR },
+	{ token_type::AND_AND, token_symbol::type::AND_AND },
+	{ token_type::OR_OR, token_symbol::type::OR_OR },
+	{ token_type::XOR_XOR, token_symbol::type::XOR_XOR },
 
 	{ token_type::PLUS, token_symbol::type::PLUS },
 	{ token_type::MINUS, token_symbol::type::MINUS },
@@ -145,6 +148,9 @@ trie<token_type> symbol_map = {
 	{ L"&", token_type::AND },
 	{ L"|", token_type::OR },
 	{ L"\\", token_type::XOR },
+	{ L"&&", token_type::AND_AND },
+	{ L"||", token_type::OR_OR },
+	{ L"\\\\", token_type::XOR_XOR },
 
 	{ L"+", token_type::PLUS },
 	{ L"-", token_type::MINUS },

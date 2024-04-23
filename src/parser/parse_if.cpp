@@ -32,9 +32,14 @@ conditional_branches* parse_ifs(token_list& Token_list) {
 
 	while (true) {
 		if (check::symbol::is(Token_list.this_(), token_symbol::type::EOL_)) {
-			Token_list.next();
+			if (check::keyword::is(Token_list.peek(), token_keyword::type::ELSE_IF) || check::keyword::is(Token_list.peek(), token_keyword::type::ELSE)) {
+				Token_list.next();
+			}
+			else {
+				break;
+			}
 		}
-		else if (dynamic_cast<token_keyword*> (Token_list.this_()) != NULL && dynamic_cast<token_keyword*> (Token_list.this_())->Type == token_keyword::type::ELSE_IF) {
+		else if (check::keyword::is(Token_list.this_(), token_keyword::type::ELSE_IF)) {
 			Token_list.next();
 			result.push_back(parse_if(Token_list));
 		}
@@ -43,7 +48,7 @@ conditional_branches* parse_ifs(token_list& Token_list) {
 		}
 	}
 
-	if (dynamic_cast<token_keyword*> (Token_list.this_()) != NULL && dynamic_cast<token_keyword*> (Token_list.this_())->Type == token_keyword::type::ELSE) {
+	if (check::keyword::is(Token_list.this_(), token_keyword::type::ELSE)) {
 		Token_list.next();
 		result.push_back(parse_else(Token_list));
 	}
