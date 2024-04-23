@@ -75,7 +75,7 @@ public:
 	};
 
 	type Type;
-	token_symbol(token_type type_, type Type, int begin, int end) : token(type_, begin, end), Type(Type) {};
+	token_symbol(type Type, int begin, int end) : token(begin, end), Type(Type) {};
 
 	std::wstring view() {
 		static std::map<token_symbol::type, std::wstring> token_to_view = {

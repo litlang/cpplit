@@ -2,13 +2,13 @@
 
 class token_entity : public token {
 public:
-	token_entity(token_type type, int begin, int end) : token(type, begin, end) {};
+	token_entity(int begin, int end) : token(begin, end) {};
 };
 
 class token_identifier : public token_entity {
 public:
 	std::wstring VALUE; // name
-	token_identifier(std::wstring value, int begin, int end) : token_entity(token_type::temp, begin, end), VALUE(value) {};
+	token_identifier(std::wstring value, int begin, int end) : token_entity(begin, end), VALUE(value) {};
 
 	std::wstring view() {
 		return this->VALUE;
@@ -17,7 +17,7 @@ public:
 
 class token_literal : public token_entity {
 public:
-	token_literal(int begin, int end) : token_entity(token_type::temp, begin, end) {};
+	token_literal(int begin, int end) : token_entity(begin, end) {};
 };
 
 class token_number : public token_literal {

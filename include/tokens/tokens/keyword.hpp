@@ -24,7 +24,7 @@ public:
 	};
 
 	type Type;
-	token_keyword(type Type, int begin, int end) : token(token_type::temp, begin, end), Type(Type) {};
+	token_keyword(type Type, int begin, int end) : token(begin, end), Type(Type) {};
 
 	std::wstring view() {
 
