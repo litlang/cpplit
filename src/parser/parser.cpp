@@ -11,7 +11,7 @@ statement_block* parse_exe(std::wstring filepath) { // parse main program
 	int index = 1; // pass BOF
 	Token_list.fetch();
 	
-	return parse_statements(Token_list, token_type::EOF_);
+	return parse_statements(Token_list, token_symbol::type::EOF_);
 }
 
 

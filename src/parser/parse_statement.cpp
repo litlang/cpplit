@@ -4,6 +4,7 @@
 
 #include "parser/parse_if.hpp"
 #include "parser/loop/parse_loop.hpp"
+#include "parser/check.hpp"
 
 
 statement* parse_expr_statement(token_list& Token_list) {
@@ -12,7 +13,7 @@ statement* parse_expr_statement(token_list& Token_list) {
 }
 
 statement* parse_statement(token_list& Token_list) {
-	if (dynamic_cast<token_identifier*> (Token_list.this_()) != NULL && Token_list.peek()->TYPE == token_type::EQUAL) {
+	if (dynamic_cast<token_identifier*> (Token_list.this_()) != NULL && check::symbol::is(Token_list.peek(), token_symbol::type::EQUAL)) {
 		token_identifier* idn = dynamic_cast<token_identifier*> (Token_list.fetch());
 		Token_list.next();
 		expr* val = parse_expression(Token_list); // a = +1

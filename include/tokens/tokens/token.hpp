@@ -33,10 +33,6 @@ enum class token_type {
 	CARET_SLASH,  // ^/
 	PERCENT,      // %
 
-	// POSITIVE,
-	// NEGATIVE, ;; chinese -x 'fu' and x-y 'jian' diff in lex
-
-
 	/// comparision operators
 	GREATER,          // >
 	LESS,             // <

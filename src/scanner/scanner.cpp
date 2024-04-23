@@ -264,10 +264,10 @@ token_list scan(std::wstring filepath) {
 
 		// EOL
 		else if (src[i] == L'\u000A' || src[i] == L'\u000D' || src[i] == L'\u0085') { // LF || CR || NEL
-			if (Token_list.back()->TYPE != token_type::EOL_) {
-				Token_list.push_back(new token_symbol {token_type::EOL_, token_symbol::type::EOL_, begin, i});
-			}
-			i += 1;
+			do {
+				i += 1;				
+			} while (src[i] == L'\u000A' || src[i] == L'\u000D' || src[i] == L'\u0085');
+			Token_list.push_back(new token_symbol {token_type::EOL_, token_symbol::type::EOL_, begin, i});
 		}
 
 		// escape
