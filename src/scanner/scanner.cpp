@@ -87,135 +87,85 @@ std::map<std::wstring, bool> literal_bool_map = {
 
 };*/
 
-std::map<token_type, token_symbol::type> new_symbol_map = {
 
-	{ token_type::AT, token_symbol::type::AT },
-	{ token_type::QUESTION, token_symbol::type::QUESTION },
-	{ token_type::NOT, token_symbol::type::NOT },
-	{ token_type::AND, token_symbol::type::AND },
-	{ token_type::OR, token_symbol::type::OR },
-	{ token_type::AND_AND, token_symbol::type::AND_AND },
-	{ token_type::OR_OR, token_symbol::type::OR_OR },
-	{ token_type::XOR_XOR, token_symbol::type::XOR_XOR },
-
-	{ token_type::PLUS, token_symbol::type::PLUS },
-	{ token_type::MINUS, token_symbol::type::MINUS },
-	{ token_type::ASTERISK, token_symbol::type::ASTERISK },
-	{ token_type::SLASH, token_symbol::type::SLASH },
-	{ token_type::PERCENT, token_symbol::type::PERCENT },
-
-
-	{ token_type::DOT, token_symbol::type::DOT },
-	{ token_type::COMMA, token_symbol::type::COMMA },
-	{ token_type::COLON, token_symbol::type::COLON },
-	{ token_type::SEMICOLON, token_symbol::type::SEMICOLON },
-	{ token_type::OPEN_PAREN, token_symbol::type::PAREN_LEFT },
-	{ token_type::CLOSE_PAREN, token_symbol::type::PAREN_RIGHT },
-	{ token_type::OPEN_BRACKET, token_symbol::type::BRACKET_LEFT },
-	{ token_type::CLOSE_BRACKET, token_symbol::type::BRACKET_RIGHT },
-	{ token_type::OPEN_BRACE, token_symbol::type::BRACE_LEFT },
-	{ token_type::CLOSE_BRACE, token_symbol::type::BRACE_RIGHT },
-	{ token_type::DOUBLE_ANGLE_BRACKET_LEFT, token_symbol::type::ANGLE_BRACKET_LEFT },
-	{ token_type::DOUBLE_ANGLE_BRACKET_RIGHT, token_symbol::type::ANGLE_BRACKET_RIGHT },
-
-	{ token_type::GREATER, token_symbol::type::GREATER },
-	{ token_type::LESS, token_symbol::type::LESS },
-	{ token_type::GREATER_EQUAL, token_symbol::type::GREATER_EQUAL },
-	{ token_type::LESS_EQUAL, token_symbol::type::LESS_EQUAL },
-	{ token_type::EQUAL_EQUAL, token_symbol::type::EQUAL_EQUAL },
-	{ token_type::NOT_EQUAL, token_symbol::type::NOT_EQUAL },
-
-	{ token_type::BELONG, token_symbol::type::SINGLE_ARROW },
-	{ token_type::SUB, token_symbol::type::DOUBLE_ARROW },
-	// { L"!=>", token_symbol::type::NOT_SUB },
-
-	{ token_type::EQUAL, token_symbol::type::EQUAL },
-	{ token_type::PLUS_EQUAL, token_symbol::type::PLUS_EQUAL },
-	{ token_type::MINUS_EQUAL, token_symbol::type::MINUS_EQUAL },
-	{ token_type::ASTERISK_EQUAL, token_symbol::type::ASTERISK_EQUAL },
-	{ token_type::SLASH_EQUAL, token_symbol::type::SLASH_EQUAL },
-	// { token_type::CARET_EQUAL, token_symbol::type::CARET_EQUAL },
-	{ token_type::PERCENT_EQUAL, token_symbol::type::PERCENT_EQUAL },
-};
-
-trie<token_type> symbol_map = {
+trie<token_symbol::type> symbol_map = {
 
 // 通用
 
-	{ L"@", token_type::AT },
-	{ L"?", token_type::QUESTION },
-	{ L"!", token_type::NOT },
-	{ L"&", token_type::AND },
-	{ L"|", token_type::OR },
-	{ L"\\", token_type::XOR },
-	{ L"&&", token_type::AND_AND },
-	{ L"||", token_type::OR_OR },
-	{ L"\\\\", token_type::XOR_XOR },
+	{ L"@", token_symbol::type::AT },
+	{ L"?", token_symbol::type::QUESTION },
+	{ L"!", token_symbol::type::NOT },
+	{ L"&", token_symbol::type::AND },
+	{ L"|", token_symbol::type::OR },
+	{ L"\\", token_symbol::type::XOR },
+	{ L"&&", token_symbol::type::AND_AND },
+	{ L"||", token_symbol::type::OR_OR },
+	{ L"\\\\", token_symbol::type::XOR_XOR },
 
-	{ L"+", token_type::PLUS },
-	{ L"-", token_type::MINUS },
-	{ L"*", token_type::ASTERISK },
-	{ L"/", token_type::SLASH },
-	{ L"^", token_type::CARET },
-	{ L"^/", token_type::CARET_SLASH },
-	{ L"%", token_type::PERCENT },
+	{ L"+", token_symbol::type::PLUS },
+	{ L"-", token_symbol::type::MINUS },
+	{ L"*", token_symbol::type::ASTERISK },
+	{ L"/", token_symbol::type::SLASH },
+	{ L"^", token_symbol::type::CARET },
+	{ L"^/", token_symbol::type::CARET_SLASH },
+	{ L"%", token_symbol::type::PERCENT },
 
 
-	{ L".", token_type::DOT },
-	{ L",", token_type::COMMA },
-	{ L":", token_type::COLON },
-	{ L";", token_type::SEMICOLON },
-	{ L"(", token_type::OPEN_PAREN },
-	{ L")", token_type::CLOSE_PAREN },
-	{ L"[", token_type::OPEN_BRACKET },
-	{ L"]", token_type::CLOSE_BRACKET },
-	{ L"{", token_type::OPEN_BRACE },
-	{ L"}", token_type::CLOSE_BRACE },
-	{ L"<<", token_type::DOUBLE_ANGLE_BRACKET_LEFT },
-	{ L">>", token_type::DOUBLE_ANGLE_BRACKET_RIGHT },
+	{ L".", token_symbol::type::DOT },
+	{ L",", token_symbol::type::COMMA },
+	{ L":", token_symbol::type::COLON },
+	{ L";", token_symbol::type::SEMICOLON },
+	{ L"(", token_symbol::type::PAREN_LEFT },
+	{ L")", token_symbol::type::PAREN_RIGHT },
+	{ L"[", token_symbol::type::BRACKET_LEFT },
+	{ L"]", token_symbol::type::BRACKET_RIGHT },
+	{ L"{", token_symbol::type::BRACE_LEFT },
+	{ L"}", token_symbol::type::BRACE_RIGHT },
+	{ L"<<", token_symbol::type::ANGLE_BRACKET_LEFT },
+	{ L">>", token_symbol::type::ANGLE_BRACKET_RIGHT },
 
-	{ L">", token_type::GREATER },
-	{ L"<", token_type::LESS },
-	{ L">=", token_type::GREATER_EQUAL },
-	{ L"≥", token_type::GREATER_EQUAL },
-	{ L"<=", token_type::LESS_EQUAL },
-	{ L"≤", token_type::LESS_EQUAL },
-	{ L"==", token_type::EQUAL_EQUAL },
-	{ L"!=", token_type::NOT_EQUAL },
-	{ L"≠", token_type::NOT_EQUAL },
+	{ L">", token_symbol::type::GREATER },
+	{ L"<", token_symbol::type::LESS },
+	{ L">=", token_symbol::type::GREATER_EQUAL },
+	{ L"≥", token_symbol::type::GREATER_EQUAL },
+	{ L"<=", token_symbol::type::LESS_EQUAL },
+	{ L"≤", token_symbol::type::LESS_EQUAL },
+	{ L"==", token_symbol::type::EQUAL_EQUAL },
+	{ L"!=", token_symbol::type::NOT_EQUAL },
+	{ L"≠", token_symbol::type::NOT_EQUAL },
 
-	{ L"->", token_type::BELONG },
-	{ L"=>", token_type::SUB },
-	{ L"!->", token_type::NOT_BELONG },
-	{ L"!=>", token_type::NOT_SUB },
+	{ L"->", token_symbol::type::SINGLE_ARROW },
+	{ L"=>", token_symbol::type::DOUBLE_ARROW },
+/*	{ L"!->", token_symbol::type::NOT_BELONG },
+	{ L"!=>", token_symbol::type::NOT_SUB },*/
 
-	{ L"=", token_type::EQUAL },
-	{ L"+=", token_type::PLUS_EQUAL },
-	{ L"-=", token_type::MINUS_EQUAL },
-	{ L"*=", token_type::ASTERISK_EQUAL },
-	{ L"/=", token_type::SLASH_EQUAL },
-	{ L"^=", token_type::CARET_EQUAL },
-	{ L"^/=", token_type::CARET_SLASH_EQUAL },
-	{ L"%=", token_type::PERCENT_EQUAL },
+	{ L"=", token_symbol::type::EQUAL },
+	{ L"+=", token_symbol::type::PLUS_EQUAL },
+	{ L"-=", token_symbol::type::MINUS_EQUAL },
+	{ L"*=", token_symbol::type::ASTERISK_EQUAL },
+	{ L"/=", token_symbol::type::SLASH_EQUAL },
+	{ L"^=", token_symbol::type::CARET_EQUAL },
+	{ L"^/=", token_symbol::type::CARET_SLASH_EQUAL },
+	{ L"%=", token_symbol::type::PERCENT_EQUAL },
 
 // zh-cn
-	{ L"？", token_type::QUESTION },
-	{ L"！", token_type::NOT },
+	{ L"？", token_symbol::type::QUESTION },
+	{ L"！", token_symbol::type::NOT },
 
-	{ L"，", token_type::COMMA },
-	{ L"：", token_type::COLON },
-	{ L"；", token_type::SEMICOLON },
-	{ L"（", token_type::OPEN_PAREN },
-	{ L"）", token_type::CLOSE_PAREN },
-	{ L"【", token_type::OPEN_BRACKET },
-	{ L"】", token_type::CLOSE_BRACKET },
-	{ L"｛", token_type::OPEN_BRACE },
-	{ L"｝", token_type::CLOSE_BRACE },
-	{ L"《", token_type::DOUBLE_ANGLE_BRACKET_LEFT },
-	{ L"》", token_type::DOUBLE_ANGLE_BRACKET_RIGHT },
+	{ L"，", token_symbol::type::COMMA },
+	{ L"：", token_symbol::type::COLON },
+	{ L"；", token_symbol::type::SEMICOLON },
+	{ L"（", token_symbol::type::PAREN_LEFT },
+	{ L"）", token_symbol::type::PAREN_RIGHT },
+	{ L"【", token_symbol::type::BRACKET_LEFT },
+	{ L"】", token_symbol::type::BRACKET_RIGHT },
+	{ L"｛", token_symbol::type::BRACE_LEFT },
+	{ L"｝", token_symbol::type::BRACE_RIGHT },
+	{ L"《", token_symbol::type::ANGLE_BRACKET_LEFT },
+	{ L"》", token_symbol::type::ANGLE_BRACKET_RIGHT },
 
-	{ L"！->", token_type::NOT_BELONG },
-	{ L"！=>", token_type::NOT_SUB }, // replace_list
+/*	{ L"！->", token_symbol::type::NOT_BELONG },
+	{ L"！=>", token_symbol::type::NOT_SUB }, // replace_list*/
 
 };
 
@@ -229,7 +179,7 @@ token_list scan(std::wstring filepath) {
 	std::vector<token*> Token_list;
 	std::wstring src = read(filepath, coding::UTF_8);
 
-	Token_list.push_back(new token_symbol {token_type::BOF_, token_symbol::type::BOF_, 0, 0});
+	Token_list.push_back(new token_symbol {token_symbol::type::BOF_, 0, 0});
 
 	int length = src.length();
 
@@ -264,10 +214,10 @@ token_list scan(std::wstring filepath) {
 
 		// EOL
 		else if (src[i] == L'\u000A' || src[i] == L'\u000D' || src[i] == L'\u0085') { // LF || CR || NEL
-			if (Token_list.back()->TYPE != token_type::EOL_) {
-				Token_list.push_back(new token_symbol {token_type::EOL_, token_symbol::type::EOL_, begin, i});
-			}
-			i += 1;
+			do {
+				i += 1;				
+			} while (src[i] == L'\u000A' || src[i] == L'\u000D' || src[i] == L'\u0085');
+			Token_list.push_back(new token_symbol {token_symbol::type::EOL_, begin, i});
 		}
 
 		// escape
@@ -333,7 +283,7 @@ token_list scan(std::wstring filepath) {
 
 		// token.symbol
 		else if (auto val = symbol_map.search(src, i)) {
-			Token_list.push_back(new token_symbol { *val, new_symbol_map[*val], begin, i });
+			Token_list.push_back(new token_symbol { *val, begin, i });
 		}
 
 		else {
@@ -342,7 +292,7 @@ token_list scan(std::wstring filepath) {
 
 	}
 
-	Token_list.push_back(new token_symbol {token_type::EOF_, token_symbol::type::EOF_, length, length});
+	Token_list.push_back(new token_symbol {token_symbol::type::EOF_, length, length});
 	return token_list { Token_list };
 
 }

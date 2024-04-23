@@ -2,28 +2,28 @@
 #include "parser/parse_statement_block.hpp"
 #include "parser/parse_statement.hpp"
 #include "exceptions/syntax_errors.hpp"
+#include "parser/check.hpp"
 
-
-statement_block* parse_statements(token_list& Token_list, token_type terminator) {
+statement_block* parse_statements(token_list& Token_list, token_symbol::type terminator) {
 	std::vector<statement*> statement_list;
 	int begin = Token_list.this_()->BEGIN;
 
-	while (Token_list.this_()->TYPE != terminator) {
+	while (!check::symbol::is(Token_list.this_(), terminator)) {
 
-		if (Token_list.this_()->TYPE == token_type::SEMICOLON || Token_list.this_()->TYPE == token_type::EOL_) {
+		if (check::symbol::is(Token_list.this_(), token_symbol::type::SEMICOLON) || check::symbol::is(Token_list.this_(), token_symbol::type::EOL_)) {
 			Token_list.next();
 		}
 
 		else {
 			statement_list.push_back(parse_statement(Token_list));
 
-			if (Token_list.this_()->TYPE != token_type::SEMICOLON &&
-				Token_list.this_()->TYPE != token_type::EOL_      &&
-				Token_list.this_()->TYPE != terminator) {
+			if (!check::symbol::is(Token_list.this_(), token_symbol::type::SEMICOLON) &&
+				!check::symbol::is(Token_list.this_(), token_symbol::type::EOL_)      &&
+				!check::symbol::is(Token_list.this_(), terminator)) {
 
-				if(dynamic_cast<token_keyword*>(Token_list.this_())!=NULL) throw 1;
 				throw new unexpect_token {2,1}; // expect semicolon, eol or }.
 			}
+			// check::symbol::require({A,B,C})
 		}
 
 	}
@@ -33,5 +33,5 @@ statement_block* parse_statements(token_list& Token_list, token_type terminator)
 }
 
 statement_block* parse_statement_block(token_list& Token_list) {
-	return parse_statements(Token_list, token_type::CLOSE_BRACE);
+	return parse_statements(Token_list, token_symbol::type::BRACE_RIGHT);
 }
