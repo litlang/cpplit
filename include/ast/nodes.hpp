@@ -1,5 +1,5 @@
 #pragma once
 
-#include "ast/nodes/node.hpp"
-#include "ast/nodes/expressions.hpp"
-#include "ast/nodes/statements.hpp"
+#include "./node.hpp"
+#include "./expressions.hpp"
+#include "./statements.hpp"
