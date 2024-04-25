@@ -30,30 +30,6 @@ public:
 	expr_entity(int begin, int end) : expr(begin, end) {};
 };
 
-class unary_expr : public expr {
-public:
-	enum class type {
-		positive,
-		negative,
-	};
-
-	expr* OPERAND;
-	type Type;
-
-	unary_expr(type Type, expr* operand, int begin, int end) : expr(begin, end), Type(Type), OPERAND(operand) {};
-	std::wstring view() {
-		static std::map<type, std::wstring> view_map = {
-			{ type::positive, L"+" },
-			{ type::negative, L"-" },
-		};
-
-		std::wstring result = L"(";
-		result += view_map[this->Type] + this->OPERAND->view();
-		result += L")";
-
-		return result;
-	}
-};
 
 class expr_number : public expr_entity {
 public:

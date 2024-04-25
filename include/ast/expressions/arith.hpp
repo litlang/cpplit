@@ -1,5 +1,53 @@
 #pragma once
 
+/*class unary_expr : public expr {
+public:
+	enum class type {
+		positive,
+		negative,
+	};
+
+	expr* OPERAND;
+	type Type;
+
+	unary_expr(type Type, expr* operand, int begin, int end) : expr(begin, end), Type(Type), OPERAND(operand) {};
+	std::wstring view() {
+		static std::map<type, std::wstring> view_map = {
+			{ type::positive, L"+" },
+			{ type::negative, L"-" },
+		};
+
+		std::wstring result = L"(";
+		result += view_map[this->Type] + this->OPERAND->view();
+		result += L")";
+
+		return result;
+	}
+};*/
+
+#include "./expr.hpp"
+
+class expr_positive : public expr {
+public:
+	expr_positive(expr* operand, int begin, int end) : expr(begin, end), operand(operand) {};
+	expr* operand;
+
+	std::wstring view() {
+		return L"(+" + this->operand->view() + L")";
+	}
+};
+
+class expr_negative : public expr {
+public:
+	expr_negative(expr* operand, int begin, int end) : expr(begin, end), operand(operand) {};
+	expr* operand;
+
+	std::wstring view() {
+		return L"(-" + this->operand->view() + L")";
+	}
+};
+
+
 class binary_expr : public expr {
 public:
 
