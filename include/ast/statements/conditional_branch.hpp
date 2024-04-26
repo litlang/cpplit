@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ast/expressions/expr.hpp"
+#include "ast/statements/statement.hpp"
+
 class conditional_branch : public statement {
 public:
 	conditional_branch(expr* Condition, statement_block* Block, int begin, int end) : statement(begin, end), CONDITION(Condition), BLOCK(Block) {};

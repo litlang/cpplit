@@ -18,7 +18,7 @@
 #include "tokens/tokens.hpp"
 
 #include "parser/parser.hpp"
-#include "ast/nodes.hpp"
+#include "ast/node.hpp"
 
 #include "semantic/class.hpp"
 #include "semantic/environment.hpp"
