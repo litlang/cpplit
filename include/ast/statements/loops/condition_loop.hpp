@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ast/expressions/expr.hpp"
-#include "ast/nodes.hpp"
+#include "ast/statements/statement.hpp"
 
 class condition_loop : public statement {
 public:
