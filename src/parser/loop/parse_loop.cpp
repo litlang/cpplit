@@ -4,6 +4,10 @@
 #include "parser/parse_statement_block.hpp"
 #include "parser/check.hpp"
 
+#include "ast/expressions/expr.hpp"
+
+#include "ast/nodes.hpp" //!
+
 condition_loop* parse_condition_loop(token_list& Token_list) {
 
 	check::symbol::require(Token_list, token_symbol::type::PAREN_LEFT);
@@ -17,6 +21,6 @@ condition_loop* parse_condition_loop(token_list& Token_list) {
 	return new condition_loop { Condition, block, Condition->BEGIN, block->END };
 }
 
-loop_statement* parse_loop(token_list& Token_list) {
+condition_loop* parse_loop(token_list& Token_list) {
 	return parse_condition_loop(Token_list);
 }
