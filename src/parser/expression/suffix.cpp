@@ -4,6 +4,8 @@
 #include "parser/parse_expression.hpp"
 #include "parser/check.hpp"
 
+#include "ast/expressions/member_access.hpp"
+
 arg_list* parse_callation(token_list& Token_list) {
 	std::vector<expr*> result;
 
