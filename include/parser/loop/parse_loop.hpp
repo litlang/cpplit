@@ -1,5 +1,6 @@
 #pragma once
 
-#include "ast/nodes.hpp"
+#include "tokens/tokens.hpp"
+#include "ast/statements/loops/condition_loop.hpp"
 
-loop_statement* parse_loop(token_list& Token_list);
+condition_loop* parse_loop(token_list& Token_list);

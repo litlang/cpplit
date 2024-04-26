@@ -1,8 +1,11 @@
 #pragma once
 
-class condition_loop : public loop_statement {
+#include "ast/expressions/expr.hpp"
+#include "ast/nodes.hpp"
+
+class condition_loop : public statement {
 public:
-	condition_loop(expr* Condition, statement_block* Block, int begin, int end) : loop_statement(begin, end), CONDITION(Condition), BODY(Block) {};
+	condition_loop(expr* Condition, statement_block* Block, int begin, int end) : statement(begin, end), CONDITION(Condition), BODY(Block) {};
 	expr* CONDITION;
 	statement_block* BODY;
 
