@@ -45,11 +45,6 @@ public:
 
 	std::wstring view() {
 		std::wstring result;
-/*		int l = this->data.size();
-	    for (int i = 0; i < l; i += 1) {
-	    	result += this->data.at(i)->view() + L" ";
-	    }
-	    result = result.substr(0, result.length() - 1);*/
 
 		for (token* t : this->data) {
 			result += t->view() + L" ";

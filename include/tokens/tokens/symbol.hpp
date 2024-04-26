@@ -6,14 +6,13 @@ class token_symbol : public token {
 public:
 
 	enum class type {
-		// operators
 
-		AT,
-		QUESTION,
-		NOT, // ! exclam
+		AT,       // @
+		QUESTION, // ?
+		NOT,      // ! exclam
 		XOR,
-		AND, // AMPERSAND &
-		OR, // BAR |
+		AND,      // AMPERSAND &
+		OR,       // BAR |
 
 		PLUS,         // + 
 		MINUS,        // -
@@ -23,7 +22,7 @@ public:
 		CARET_SLASH,  // ^/
 		PERCENT,      // %
 
-		/// comparision operators
+		// comparision operators
 		GREATER,          // >
 		LESS,             // <
 		GREATER_EQUAL,    // >=
@@ -33,7 +32,7 @@ public:
 
 		// !> !< !>= ...
 
-		/// logical operators
+		// logical operators
 		NOT_NOT, // !!
 		AND_AND, // &&
 		XOR_XOR,

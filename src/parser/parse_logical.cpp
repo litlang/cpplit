@@ -1,7 +1,9 @@
 #include "parser/parse_logical.hpp"
-#include "ast/nodes.hpp"
 #include "parser/parse_comparation.hpp"
 #include "parser/check.hpp"
+
+#include "ast/expressions/logical.hpp"
+
 
 expr* parse_logical_and(token_list& Token_list) {
 

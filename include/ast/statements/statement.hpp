@@ -1,7 +1,8 @@
 #pragma once
 
 #include "tokens/tokens.hpp"
-#include "ast/nodes.hpp"
+#include "ast/node.hpp"
+#include "ast/expressions/expr.hpp"
 
 #include "semantic/class.hpp"
 #include "semantic/environment.hpp"
