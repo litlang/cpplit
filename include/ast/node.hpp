@@ -11,9 +11,7 @@ class node {
 public:
 	int BEGIN;
 	int END;
-	virtual std::wstring view() {
-		return this->view();
-	}
+	virtual std::wstring view() = 0;
 
 	node(int begin, int end) : BEGIN(begin), END(end) {};
 

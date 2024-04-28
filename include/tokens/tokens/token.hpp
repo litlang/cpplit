@@ -10,9 +10,7 @@ public:
 	int BEGIN, END;
 	token(int begin, int end) : BEGIN(begin), END(end) {};
 
-	virtual std::wstring view() {
-		return this->view();
-	};
+	virtual std::wstring view() = 0;
 
 };
 
