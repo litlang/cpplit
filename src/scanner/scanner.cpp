@@ -15,8 +15,6 @@
 #include <vector>
 #include <map>
 
-#include <regex>
-
 #include "utils/position.hpp"
 #include "scanner/trie.hpp"
 
@@ -79,14 +77,6 @@ std::map<std::wstring, bool> literal_bool_map = {
 	{ L"假", false },
 
 };
-
-
-/*namespace pats {
-
-	std::wregex num(L"^[0-9]+(\\.[0-9]+)?");
-
-};*/
-
 
 trie<token_symbol::type> symbol_map = {
 
@@ -239,14 +229,7 @@ token_list scan(std::wstring filepath) {
 
 		// entity.literal.number
 		else if (digit_charset.include(src[i])) {
-
-/*			std::wsmatch regres;
-			std::wstring matchfrom = src.substr(i);
-
-			std::regex_search(matchfrom, regres, pats::num);
-			std::wstring s_val = regres.str();*/
 			int val = cvt_dec(src, i);
-
 			Token_list.push_back(new token_number { val, begin, i });
 		}
 
