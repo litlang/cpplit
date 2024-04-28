@@ -10,6 +10,7 @@
 
 #include "tokens/tokens.hpp"
 #include "tokens/keyword.hpp"
+#include "tokens/symbol.hpp"
 
 #include "utils/numcvt.hpp"
 #include "exceptions/lex_errors.hpp"
