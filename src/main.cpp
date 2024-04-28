@@ -15,7 +15,6 @@
 
 #include "scanner/scanner.hpp"
 #include "exceptions/lex_errors.hpp"
-#include "tokens/tokens.hpp"
 
 #include "parser/parser.hpp"
 #include "ast/node.hpp"
