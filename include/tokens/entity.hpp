@@ -1,5 +1,7 @@
 #pragma once
 
+#include "./token.hpp"
+
 class token_entity : public token {
 public:
 	token_entity(int begin, int end) : token(begin, end) {};

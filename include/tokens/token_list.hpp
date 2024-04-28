@@ -1,18 +1,9 @@
 #pragma once
 
 #include <string>
-#include <map>
 #include <vector>
 
-
-class token {
-public:
-	int BEGIN, END;
-	token(int begin, int end) : BEGIN(begin), END(end) {};
-
-	virtual std::wstring view() = 0;
-
-};
+#include "./tokens/token.hpp" //!
 
 class token_list {
 public:

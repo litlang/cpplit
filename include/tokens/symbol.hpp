@@ -1,6 +1,8 @@
 #pragma once
 
-#include "tokens/tokens.hpp"
+#include <map>
+
+#include "./token.hpp"
 
 class token_symbol : public token {
 public:

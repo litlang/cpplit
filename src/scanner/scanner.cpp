@@ -1,19 +1,21 @@
+#include <string>
+#include <vector>
+#include <map>
+
 #include "scanner/scanner.hpp"
 #include "scanner/scan_string.hpp"
 
 #include "utils/coding.hpp"
 #include "reader/reader.hpp"
 
-#include "tokens/tokens.hpp"
+#include "tokens/keyword.hpp"
+#include "tokens/symbol.hpp"
+
 #include "utils/numcvt.hpp"
 #include "exceptions/lex_errors.hpp"
 
 #include "utils/ranges.hpp"
 #include "utils/null.hpp"
-
-#include <string>
-#include <vector>
-#include <map>
 
 #include "utils/position.hpp"
 #include "scanner/trie.hpp"

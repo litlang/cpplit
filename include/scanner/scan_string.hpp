@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tokens/tokens.hpp"
+#include "tokens/entity.hpp"
 
 bool string_head_matched(wchar_t ch);
 

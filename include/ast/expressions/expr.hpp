@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "tokens/tokens.hpp"
+#include "tokens/entity.hpp"
 
 #include "ast/node.hpp"
 
