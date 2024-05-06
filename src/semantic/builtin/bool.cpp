@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <map>
+#include <string>
 
 class _bool_init : public semantic_function {
 public:
@@ -31,14 +32,15 @@ public:
 	_bool_output() : semantic_method(builtin_class_bool) {};
 
 	semantic_object* call(semantic_object* obj, std::vector<semantic_object*> arglist) {
-		return new semantic_object_builtin_string { dynamic_cast<builtin_object_bool*> (obj)->data ? L"真" : L"假" };
+		return new semantic_object_builtin_string { dynamic_cast<builtin_object_bool*> (obj)->data ? L"true" : L"false" };
 	}
 };
 auto bool_output = new _bool_output {};
 
 semantic_class* builtin_class_bool = new semantic_class { {}, 
-{{L"call", bool_init}}, 
-{
-	{L"bool", bool_bool}, {L"output", bool_output}
-}
+	{{L"call", bool_init}}, 
+	{
+		{ L"bool", bool_bool },
+		{ L"output", bool_output },
+	}
 };
