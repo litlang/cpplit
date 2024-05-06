@@ -33,9 +33,7 @@ class semantic_object : public semantic_node {
 public:
 	semantic_object(semantic_class* type, std::map<std::wstring, semantic_object*> members) : type(type), members(members) {};
 	semantic_class* type;
-	virtual semantic_node* get_member(std::wstring name) {
-		return members[name];
-	}
+	semantic_node* get_member(std::wstring name);
 
 private:
 	std::map<std::wstring, semantic_object*> members;
