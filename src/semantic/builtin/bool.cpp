@@ -5,13 +5,6 @@
 #include <vector>
 #include <map>
 
-/*class new_semantic_class : public semantic_class {
-public:
-	new_semantic_class(std::vector<semantic_class*> supers, std::map<std::wstring, semantic_node*> members, std::map<std::wstring, semantic_method*> methods) : members(members), semantic_class(supers, methods) {}
-
-	std::map<std::wstring, semantic_node*> members;
-};*/
-
 class _bool_init : public semantic_function {
 public:
 	_bool_init() : semantic_function(builtin_class_bool) {};

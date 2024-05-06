@@ -15,14 +15,6 @@ class semantic_method;
 
 class semantic_class : public semantic_node {
 public:
-/*	semantic_class(std::vector<semantic_class*> supers, semantic_function* constractor, std::map<std::wstring, semantic_method*> methods) : supers(supers), methods(methods) {
-		this->members[L"call"] = constractor;
-
-		for (auto super : supers) {
-			this->methods.merge(super->methods);
-		}
-	}*/
-
 	semantic_class(std::vector<semantic_class*> supers = {}, std::map<std::wstring, semantic_node*> members = {}, std::map<std::wstring, semantic_method*> methods = {}) : semantic_node(members), supers(supers), methods(methods) {};
 	std::vector<semantic_class*> supers;
 	std::map<std::wstring, semantic_method*> methods;
@@ -86,24 +78,6 @@ public:
 	}
 };
 
-
-
-/*class semantic_builtin_func : public semantic_function {
-public:
-	semantic_builtin_func(semantic_class* type) : semantic_function(type) {};
-
-	semantic_object* call(std::vector<semantic_object*> arglist);
-};*/
-
-/*class test_builtin_add : public semantic_builtin_func {
-public:
-	semantic_object* call(std::vector<semantic_object*> arglist) {
-		auto first = dynamic_cast<builtin_object_integer*> (arglist[0]);
-		auto second = dynamic_cast<builtin_object_integer*> (arglist[1]);
-		return first->val + second->val;
-	}
-};*/
-
 class semantic_method : public semantic_node {
 public:
 	semantic_method(semantic_class* type) : return_type(type) {};
@@ -117,13 +91,6 @@ public:
 	}
 };
 
-/*class semantic_builtin_method_string : public semantic_method {
-public:
-	semantic_object* call(semantic_object* obj, std::vector<semantic_object*> arglist) {
-		return obj;
-	}
-};
-*/
 /*// ...
 auto lit_null = semantic_type { {}, {} };
 // auto lit_integer = semantic_type { {}, {} };
