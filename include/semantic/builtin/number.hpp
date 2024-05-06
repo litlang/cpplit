@@ -14,7 +14,7 @@ class semantic_builtin_object_integer : public semantic_object {
 public:
 	semantic_builtin_object_integer(int val) : semantic_object(semantic_builtin_class_integer, {}), val(val) {};
 	int val;
-	std::wstring view_temp;
+	std::wstring view_temp;/**/
 
 	semantic_object* get_member(std::wstring name) {
 		if (name == L"output") {

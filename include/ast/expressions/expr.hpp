@@ -10,6 +10,7 @@
 #include "semantic/class.hpp"
 #include "semantic/environment.hpp"
 #include "semantic/builtins.hpp"
+#include "semantic/builtin/bool.hpp"
 
 #include "runtime.hpp"
 
@@ -72,7 +73,7 @@ public:
 	}
 
 	semantic_node* eval(environment env, const runtime& Runtime) {
-		return new semantic_builtin_object_boolean { this->VALUE->VALUE };
+		return new builtin_object_bool { this->VALUE->VALUE };
 	}
 };
 
