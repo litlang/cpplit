@@ -1,5 +1,7 @@
 #pragma once
 
+#include "semantic/builtin/string.hpp"
+
 class _semantic_builtin_class_integer : public semantic_class {
 public:
 	_semantic_builtin_class_integer() {};
@@ -18,7 +20,7 @@ public:
 
 	semantic_object* get_member(std::wstring name) {
 		if (name == L"output") {
-			return new semantic_object_builtin_string { std::to_wstring(this->val) };
+			return new builtin_object_string { std::to_wstring(this->val) };
 		}
 		else if (name == L"string") {
 			throw "not support";

@@ -32,7 +32,7 @@ public:
 	_bool_output() : semantic_method(builtin_class_bool) {};
 
 	semantic_object* call(semantic_object* obj, std::vector<semantic_object*> arglist) {
-		return new semantic_object_builtin_string { dynamic_cast<builtin_object_bool*> (obj)->data ? L"true" : L"false" };
+		return new builtin_object_string { dynamic_cast<builtin_object_bool*> (obj)->data ? L"true" : L"false" };
 	}
 };
 auto bool_output = new _bool_output {};

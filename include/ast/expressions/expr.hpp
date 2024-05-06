@@ -58,7 +58,7 @@ public:
 	}
 
 	semantic_node* eval(environment env, const runtime& Runtime) {
-		return new semantic_object_builtin_string { this->VALUE->VALUE };
+		return new builtin_object_string { this->VALUE->VALUE };
 	}
 };
 

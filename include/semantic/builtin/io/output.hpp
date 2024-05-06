@@ -13,11 +13,11 @@ public:
 	semantic_object* call(_builtin_object_tuple* arglist) {
 		auto arg = arglist->items[0];
 		auto _out = arg->get_member(L"output");
-		if (auto out = dynamic_cast <semantic_object_builtin_string*> (_out); out != NULL) {//!
+		if (auto out = dynamic_cast <builtin_object_string*> (_out); out != NULL) {//!
 			std::wcout << out -> val;
 		}
 		else if (auto out = dynamic_cast <semantic_method*> (_out); out != NULL) {
-			std::wcout << dynamic_cast <semantic_object_builtin_string*> (out->call(arg, {})) -> val;
+			std::wcout << dynamic_cast <builtin_object_string*> (out->call(arg, {})) -> val;
 		}
 		return semantic_builtin_object_null;
 	}
