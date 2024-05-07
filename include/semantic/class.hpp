@@ -19,14 +19,7 @@ public:
 	std::vector<semantic_class*> supers;
 	std::map<std::wstring, semantic_method*> methods;
 
-	semantic_node* get_member(std::wstring name) {
-		if (this->members.find(name) != this->members.end()) {
-			return this->members[name];
-		}
-		else {
-			throw "member not exists.";
-		}
-	}
+	semantic_node* get_member(std::wstring name);
 };
 
 class semantic_object : public semantic_node {
@@ -57,8 +50,6 @@ public:
 	std::vector<semantic_object*> items;
 };
 
-
-
 class semantic_function : public semantic_node {
 public:
 	semantic_function(semantic_class* type) : return_type(type) {};
@@ -88,25 +79,5 @@ public:
 		throw L"no member named " + name;
 	}
 };
-
-/*// ...
-auto lit_null = semantic_type { {}, {} };
-// auto lit_integer = semantic_type { {}, {} };
-auto lit_string = semantic_type {
-	{},
-
-	{
-		{ L"string", semantic_function { lit_null } },
-	},
-};*/
-
-/*auto lit_integer = new semantic_class { {} };
-
-class builtin_object_integer : public semantic_object {
-public:
-	builtin_object_integer(int val) : semantic_object(lit_integer, {}), val(val) {};
-	int val;
-};
-*/
 
 // null == null

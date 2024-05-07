@@ -33,7 +33,7 @@ auto string_output = new _string_output {};
 
 class _string_add : public semantic_method {
 public:
-	_string_add() : semantic_method(builtin_class_string) {};
+	_string_add() : semantic_method(builtin_class_string) {}; //!
 
 	semantic_object* call(semantic_object* obj, std::vector<semantic_object*> arglist) {
 		auto left = dynamic_cast<builtin_object_string*> (obj);
