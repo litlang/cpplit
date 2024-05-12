@@ -8,8 +8,8 @@
 #include "ast/node.hpp"
 
 #include "semantic/class.hpp"
+#include "semantic/builtin/number.hpp"
 #include "semantic/environment.hpp"
-#include "semantic/builtins.hpp"
 #include "semantic/builtin/bool.hpp"
 
 #include "runtime.hpp"

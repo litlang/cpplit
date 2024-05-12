@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "semantic/builtins.hpp"
+#include "semantic/builtin/io/output.hpp"
 #include "semantic/builtin/bool.hpp"
 #include "semantic/builtin/string.hpp"
 

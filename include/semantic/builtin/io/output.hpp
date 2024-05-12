@@ -1,7 +1,8 @@
 #pragma once
 
 #include "semantic/class.hpp"
-#include "semantic/builtins.hpp"
+#include "semantic/builtin/null.hpp"
+#include "semantic/builtin/string.hpp"
 
 #include <iostream>
 
