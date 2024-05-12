@@ -1,13 +1,8 @@
 #pragma once
 
 #include "ast/node.hpp"
-#include "ast/expressions/expr.hpp"
-
-#include "semantic/class.hpp"
 #include "semantic/environment.hpp"
-
 #include "runtime.hpp"
-
 
 class statement : public node {
 public:

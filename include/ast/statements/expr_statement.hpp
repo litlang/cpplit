@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ast/expressions/expr.hpp"
+#include "./statement.hpp"
+
 class expr_statement : public statement {
 public:
 	expr_statement(expr* Expr, int begin, int end) : statement(begin, end), EXPR(Expr) {};
