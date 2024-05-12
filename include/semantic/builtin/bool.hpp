@@ -1,6 +1,7 @@
 #pragma once
 
 #include "semantic/class.hpp"
+#include "semantic/object.hpp"
 
 extern semantic_class* builtin_class_bool;
 

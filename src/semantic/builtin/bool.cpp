@@ -1,6 +1,8 @@
 #include "semantic/builtin/bool.hpp"
 #include "semantic/builtin/string.hpp"
+#include "semantic/builtin/tuple.hpp"
 #include "semantic/class.hpp"
+#include "semantic/fm.hpp"
 
 #include <vector>
 #include <map>

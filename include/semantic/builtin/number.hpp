@@ -1,5 +1,7 @@
 #pragma once
 
+#include "semantic/class.hpp"
+#include "semantic/object.hpp"
 #include "semantic/builtin/string.hpp"
 
 class _semantic_builtin_class_integer : public semantic_class {

@@ -1,3 +1,4 @@
+#include "semantic/fm.hpp"
 #include "semantic/builtin/string.hpp"
 
 class _string_init : public semantic_function {

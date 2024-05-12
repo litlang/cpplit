@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <map>
+#include <string>
+
 class semantic_node {
 public:
 	semantic_node(std::map<std::wstring, semantic_node*> members = {}) : members(members) {};
