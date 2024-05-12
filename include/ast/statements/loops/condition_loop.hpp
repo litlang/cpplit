@@ -2,6 +2,7 @@
 
 #include "ast/expressions/expr.hpp"
 #include "ast/statements/statement.hpp"
+#include "ast/statements/statement_block.hpp"
 
 class condition_loop : public statement {
 public:

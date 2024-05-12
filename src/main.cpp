@@ -86,7 +86,7 @@ int main(int argc, char** args) {
             Runtime.working_directory = std::filesystem::current_path();
             Runtime.debug.lang = language::en_us;
 
-            statement_block* ast = parse_exe(filepath);
+            auto ast = parse_exe(filepath);
 
             auto env = environment {};
             ast->exec(env, Runtime);
