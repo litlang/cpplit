@@ -1,5 +1,7 @@
 #pragma once
 
+#include <gmpxx.h>
+
 #include "semantic/class.hpp"
 #include "semantic/object.hpp"
 #include "semantic/builtin/string.hpp"
