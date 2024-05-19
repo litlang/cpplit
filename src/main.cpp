@@ -7,8 +7,6 @@
 
 #include <locale>
 
-#include "utils/ansi.hpp"
-
 #include "exceptions/exception.hpp"
 #include "exceptions/command_errors.hpp"
 
@@ -32,7 +30,6 @@
 
 #include "utils/coding.hpp"
 
-#include <gmp.h>
 #include <gmpxx.h>
 static void test() {
     // 初始化两个大数
@@ -83,7 +80,7 @@ int main(int argc, char** args) {
 
             // bool color;
             std::wstring o = scan(filepath).view();
-            std::wcout << rmansi(o) << std::endl;                
+            std::wcout << o << std::endl;                
         
         }
 
@@ -99,7 +96,7 @@ int main(int argc, char** args) {
             
             node* ast = parse_exe(filepath);
             std::wstring o = ast->view();
-            std::wcout << rmansi(o);
+            std::wcout << o;
             
         }
 
