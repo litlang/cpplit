@@ -1,10 +1,8 @@
 #pragma once
 
-#include <gmpxx.h>
-
 #include "semantic/class.hpp"
 #include "semantic/object.hpp"
-#include "semantic/builtin/string.hpp"
+/*#include "semantic/builtin/string.hpp"
 
 class _semantic_builtin_class_integer : public semantic_class {
 public:
@@ -20,7 +18,7 @@ class semantic_builtin_object_integer : public semantic_object {
 public:
 	semantic_builtin_object_integer(int val) : semantic_object(semantic_builtin_class_integer, {}), val(val) {};
 	int val;
-	std::wstring view_temp;/**/
+	std::wstring view_temp;
 
 	semantic_object* get_member(std::wstring name) {
 		if (name == L"output") {
@@ -33,4 +31,16 @@ public:
 			throw "member not exists.";
 		}
 	}
+};*/
+
+// -----
+
+#include <gmpxx.h>
+
+extern semantic_class* builtin_class_number;
+
+class builtin_object_number : public semantic_object {
+public:
+	builtin_object_number(mpf_class val) : semantic_object(builtin_class_number, {}), val(val) {};
+	mpz_class val;
 };

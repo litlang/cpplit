@@ -32,6 +32,7 @@ public:
 };
 
 
+#include <gmpxx.h>
 class expr_number : public expr_entity {
 public:
 	expr_number(token_number* val, int begin, int end) : expr_entity(begin, end), VALUE(val) {};
@@ -43,7 +44,9 @@ public:
 	}
 
 	semantic_node* eval(environment env, const runtime& Runtime) {
-		return new semantic_builtin_object_integer { this->VALUE->val };
+		mpz_class data;
+		data = this->VALUE->val;
+		return new builtin_object_number { data };
 	}
 };
 

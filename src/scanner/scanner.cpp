@@ -231,8 +231,13 @@ token_list scan(std::wstring filepath) {
 
 		// entity.literal.number
 		else if (digit_charset.include(src[i])) {
-			int val = cvt_dec(src, i);
-			Token_list.push_back(new token_number { val, begin, i });
+			// int val = cvt_dec(src, i);
+			std::wstring val;
+			do {
+				val += src[i];
+				i += 1;
+			} while (digit_charset.include(src[i]));
+			Token_list.push_back(new token_number { to_string(val), begin, i });
 		}
 
 		// entity.identifier || keyword || literal

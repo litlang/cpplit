@@ -22,13 +22,14 @@ public:
 	token_literal(int begin, int end) : token_entity(begin, end) {};
 };
 
+#include "utils/coding.hpp"
 class token_number : public token_literal {
 public:
-	token_number(int val, int begin, int end) : token_literal(begin, end), val(val) {};
-	int val;
+	token_number(std::string val, int begin, int end) : token_literal(begin, end), val(val) {};
+	std::string val;
 
 	std::wstring view() {
-		return std::to_wstring(this->val);
+		return to_wstring(this->val);
 	};
 };
 
