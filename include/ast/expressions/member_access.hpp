@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ast/expressions/identifier.hpp"
 class member_access : public expr_identity {
 public:
 	member_access(expr* obj, token_identifier* mem, int begin, int end) : expr_identity(begin, end), OBJECT(obj), MEMBER(mem) {};

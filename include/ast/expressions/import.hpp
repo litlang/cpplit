@@ -9,6 +9,7 @@
 #include "runtime.hpp"
 
 #include "ast/expressions/expr.hpp"
+#include "ast/expressions/string.hpp"
 
 class import : public expr {
 public:

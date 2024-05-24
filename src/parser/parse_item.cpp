@@ -5,6 +5,12 @@
 #include "parser/parse_expression.hpp"
 #include "parser/check.hpp"
 
+
+#include "ast/expressions/number.hpp"
+#include "ast/expressions/string.hpp"
+#include "ast/expressions/bool.hpp"
+#include "ast/expressions/identifier.hpp"
+
 expr_entity* make_entity(token_entity* Token) {
 	
 	if (dynamic_cast<token_number*> (Token) != NULL) {
