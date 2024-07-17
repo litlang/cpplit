@@ -4,7 +4,6 @@
 
 #include "exceptions/fserrs.hpp"
 #include "utils/coding.hpp"
-#include "reader/reader.hpp"
 
 std::map<std::wstring, std::wstring> content_map;
 

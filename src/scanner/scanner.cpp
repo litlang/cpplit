@@ -6,7 +6,7 @@
 #include "scanner/scan_string.hpp"
 
 #include "utils/coding.hpp"
-#include "reader/reader.hpp"
+#include "reader.hpp"
 
 #include "tokens/keyword.hpp"
 #include "tokens/symbol.hpp"
