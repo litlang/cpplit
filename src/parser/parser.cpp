@@ -1,4 +1,4 @@
-#include "scanner/scanner.hpp"
+#include "scanner.hpp"
 
 #include "parser/parser.hpp"
 

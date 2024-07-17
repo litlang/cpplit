@@ -11,7 +11,7 @@
 #include "exceptions/command_errors.hpp"
 
 
-#include "scanner/scanner.hpp"
+#include "scanner.hpp"
 #include "exceptions/lex_errors.hpp"
 
 #include "parser/parser.hpp"

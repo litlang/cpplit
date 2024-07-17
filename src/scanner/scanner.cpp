@@ -2,8 +2,8 @@
 #include <vector>
 #include <map>
 
-#include "scanner/scanner.hpp"
-#include "scanner/scan_string.hpp"
+#include "tokens/token_list.hpp"
+#include "scan_string.hpp"
 
 #include "utils/coding.hpp"
 #include "reader.hpp"
@@ -18,7 +18,7 @@
 #include "utils/null.hpp"
 
 #include "utils/position.hpp"
-#include "scanner/trie.hpp"
+#include "trie.hpp"
 
 ranges identifier_charset = {
 

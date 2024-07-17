@@ -14,14 +14,25 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".so" ".lib" ".dll" ".dylib")
 set(DEPS_DIR ${PROJECT_SOURCE_DIR}/deps)
 set(GMP_DIR ${DEPS_DIR}/gmp)
 
+# file reader
 file(GLOB_RECURSE READER_SOURCES "src/reader/*.cpp")
 add_library(${PROJECT_NAME}_reader STATIC ${READER_SOURCES})
 target_include_directories(${PROJECT_NAME}_reader INTERFACE src/reader/interface)
 
+# scanner
+file(GLOB_RECURSE SCANNER_SOURCES "src/scanner/*.cpp")
+file(GLOB_RECURSE OLD_SCANNER_SOURCES "src/*.old.cpp")
+list(REMOVE_ITEM SCANNER_SOURCES ${OLD_SCANNER_SOURCES})
+add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES})
+target_include_directories(${PROJECT_NAME}_scanner INTERFACE src/scanner/interface)
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE src/scanner/include)
+target_link_libraries(${PROJECT_NAME}_scanner ${PROJECT_NAME}_reader)
+
+
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE OLD_SOURCES "src/*.old.cpp")
 list(REMOVE_ITEM SOURCES ${OLD_SOURCES})
-list(REMOVE_ITEM SOURCES src/reader/reader.cpp) #..
+list(REMOVE_ITEM SOURCES ${READER_SOURCES} ${SCANNER_SOURCES}) #..
 
 include_directories(${GMP_DIR}/include)
 include_directories("include")
@@ -32,7 +43,7 @@ find_library(GMPXX_LIBRARY gmpxx ${GMP_DIR}/lib)
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY})
 target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_reader)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_scanner)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-static" LINK_SEARCH_START_STATIC TRUE LINK_SEARCH_END_STATIC TRUE)
