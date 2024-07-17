@@ -1,8 +1,8 @@
 #include "ast/statements/conditional_branch.hpp"
 
-#include "parser/parse_expression.hpp"
-#include "parser/parse_statement_block.hpp"
-#include "parser/check.hpp"
+#include "parse_expression.hpp"
+#include "parse_statement_block.hpp"
+#include "check.hpp"
 
 conditional_branch* parse_if(token_list& Token_list) {
 

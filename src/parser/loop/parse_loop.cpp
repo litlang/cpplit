@@ -1,8 +1,8 @@
-#include "parser/loop/parse_loop.hpp"
+#include "loop/parse_loop.hpp"
 
-#include "parser/parse_expression.hpp"
-#include "parser/parse_statement_block.hpp"
-#include "parser/check.hpp"
+#include "parse_expression.hpp"
+#include "parse_statement_block.hpp"
+#include "check.hpp"
 
 #include "ast/expressions/expr.hpp"
 

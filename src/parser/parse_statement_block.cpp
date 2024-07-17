@@ -1,7 +1,7 @@
-#include "parser/parse_statement_block.hpp"
-#include "parser/parse_statement.hpp"
+#include "parse_statement_block.hpp"
+#include "parse_statement.hpp"
 #include "exceptions/syntax_errors.hpp"
-#include "parser/check.hpp"
+#include "check.hpp"
 
 statement_block* parse_statements(token_list& Token_list, token_symbol::type terminator) {
 	std::vector<statement*> statement_list;

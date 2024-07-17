@@ -23,16 +23,28 @@ target_include_directories(${PROJECT_NAME}_reader INTERFACE src/reader/interface
 file(GLOB_RECURSE SCANNER_SOURCES "src/scanner/*.cpp")
 file(GLOB_RECURSE OLD_SCANNER_SOURCES "src/*.old.cpp")
 list(REMOVE_ITEM SCANNER_SOURCES ${OLD_SCANNER_SOURCES})
+
 add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES})
 target_include_directories(${PROJECT_NAME}_scanner INTERFACE src/scanner/interface)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE src/scanner/include)
 target_link_libraries(${PROJECT_NAME}_scanner ${PROJECT_NAME}_reader)
 
 
+# parser
+file(GLOB_RECURSE PARSER_SOURCES src/parser/*.cpp)
+file(GLOB_RECURSE OLD_PARSER_SOURCES src/parser/*.old.cpp)
+list(REMOVE_ITEM PARSER_SOURCES ${OLD_PARSER_SOURCES})
+
+add_library(${PROJECT_NAME}_parser STATIC ${PARSER_SOURCES})
+target_include_directories(${PROJECT_NAME}_parser INTERFACE src/parser/interface)
+target_include_directories(${PROJECT_NAME}_parser PRIVATE src/parser/include)
+target_link_libraries(${PROJECT_NAME}_parser ${PROJECT_NAME}_scanner)
+
+
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE OLD_SOURCES "src/*.old.cpp")
 list(REMOVE_ITEM SOURCES ${OLD_SOURCES})
-list(REMOVE_ITEM SOURCES ${READER_SOURCES} ${SCANNER_SOURCES}) #..
+list(REMOVE_ITEM SOURCES ${READER_SOURCES} ${SCANNER_SOURCES} ${PARSER_SOURCES}) #..
 
 include_directories(${GMP_DIR}/include)
 include_directories("include")
@@ -43,13 +55,11 @@ find_library(GMPXX_LIBRARY gmpxx ${GMP_DIR}/lib)
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY})
 target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_scanner)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_parser)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-static" LINK_SEARCH_START_STATIC TRUE LINK_SEARCH_END_STATIC TRUE)
 endif()
-
-# set (EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin) #..lib? install libs
 add_custom_target(uninstall

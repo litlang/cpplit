@@ -1,8 +1,6 @@
 #include "scanner.hpp"
 
-#include "parser/parser.hpp"
-
-#include "parser/parse_statement_block.hpp"
+#include "parse_statement_block.hpp"
 
 statement_block* parse_exe(std::wstring filepath) { // parse main program
 	token_list Token_list = scan(filepath);

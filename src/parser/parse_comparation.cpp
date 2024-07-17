@@ -1,5 +1,5 @@
-#include "parser/parse_comparation.hpp"
-#include "parser/parse_arith.hpp"
+#include "parse_comparation.hpp"
+#include "parse_arith.hpp"
 
 #include "tokens/symbol.hpp"
 #include "ast/expressions/comparation.hpp"

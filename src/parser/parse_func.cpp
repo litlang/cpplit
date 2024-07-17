@@ -1,7 +1,7 @@
-#include "parser/parse_func.hpp"
-#include "parser/check.hpp"
-#include "parser/parse_expression.hpp"
-#include "parser/parse_statement_block.hpp"
+#include "parse_func.hpp"
+#include "check.hpp"
+#include "parse_expression.hpp"
+#include "parse_statement_block.hpp"
 #include "ast/expressions/func.hpp"
 
 expr* parse_func(token_list& Token_list) {

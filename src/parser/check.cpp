@@ -1,4 +1,4 @@
-#include "parser/check.hpp"
+#include "check.hpp"
 #include "exceptions/syntax_errors.hpp"
 
 // check_token.cpp

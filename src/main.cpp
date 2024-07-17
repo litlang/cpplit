@@ -14,7 +14,7 @@
 #include "scanner.hpp"
 #include "exceptions/lex_errors.hpp"
 
-#include "parser/parser.hpp"
+#include "parser.hpp"
 #include "ast/node.hpp"
 
 #include "semantic/class.hpp"

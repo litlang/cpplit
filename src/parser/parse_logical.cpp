@@ -1,6 +1,6 @@
-#include "parser/parse_logical.hpp"
-#include "parser/parse_comparation.hpp"
-#include "parser/check.hpp"
+#include "parse_logical.hpp"
+#include "parse_comparation.hpp"
+#include "check.hpp"
 
 #include "ast/expressions/logical.hpp"
 
