@@ -1,5 +1,5 @@
 #pragma once
 
-#include "utils/losh.hpp"
+#include "losh.hpp"
 
 void help_version(losh command);

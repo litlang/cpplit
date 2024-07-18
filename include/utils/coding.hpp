@@ -7,7 +7,7 @@ enum class coding {
 
 	ASCII,
 	UTF_8,
-
+	UTF_16, //? &include multi-name(?)?
 };
 
 static std::wstring to_wstring(std::string src, coding Coding = coding::UTF_8) {

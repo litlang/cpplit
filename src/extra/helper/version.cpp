@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "utils/losh.hpp"
+#include "losh.hpp"
 
 std::wstring version = L"0.0.5";
 

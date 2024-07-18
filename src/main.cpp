@@ -21,7 +21,7 @@
 #include "semantic/environment.hpp"
 
 #include "utils/ranges.hpp"
-#include "utils/losh.hpp"
+#include "losh.hpp"
 
 #include "extra/helper/helper.hpp"
 #include "extra/packer/pack.hpp"
