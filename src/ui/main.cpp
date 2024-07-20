@@ -28,8 +28,6 @@
 
 #include "runtime.hpp"
 
-#include "utils/coding.hpp"
-
 #include <gmpxx.h>
 static void test() {
     // 初始化两个大数

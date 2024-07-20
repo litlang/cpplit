@@ -22,7 +22,7 @@ public:
 auto number_number = new _number_number {};
 
 #include <sstream>
-#include "utils/coding.hpp"
+#include "codec.hpp"
 #include "semantic/builtin/string.hpp"
 class _number_output : public semantic_method {
 public:
@@ -31,7 +31,7 @@ public:
 	semantic_object* call(semantic_object* obj, std::vector<semantic_object*> arglist) {
 		std::stringstream s;
 		s << dynamic_cast<builtin_object_number*> (obj) -> val;
-		return new builtin_object_string { to_wstring(s.str())};
+		return new builtin_object_string { decode(s.str())};
 	}
 };
 auto number_output = new _number_output {};

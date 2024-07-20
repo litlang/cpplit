@@ -5,7 +5,7 @@
 #include "tokens/token_list.hpp"
 #include "scan_string.hpp"
 
-#include "utils/coding.hpp"
+#include "codec.hpp"
 #include "reader.hpp"
 
 #include "tokens/keyword.hpp"
@@ -169,7 +169,7 @@ trie<null> ignore_set = {
 token_list scan(std::wstring filepath) {
 
 	std::vector<token*> Token_list;
-	std::wstring src = read(filepath, coding::UTF_8);
+	std::wstring src = read(filepath, codec_type::UTF_8);
 
 	Token_list.push_back(new token_symbol {token_symbol::type::BOF_, 0, 0});
 
@@ -237,7 +237,7 @@ token_list scan(std::wstring filepath) {
 				val += src[i];
 				i += 1;
 			} while (digit_charset.include(src[i]));
-			Token_list.push_back(new token_number { to_string(val), begin, i });
+			Token_list.push_back(new token_number { encode(val), begin, i }); //!
 		}
 
 		// entity.identifier || keyword || literal
