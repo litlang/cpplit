@@ -4,13 +4,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(lit)
 
-# set distribution directory
-set(DIST_DIR ${CMAKE_SOURCE_DIR}/dist)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIST_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${DIST_DIR}/lib)
-
-
 # source
 set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
