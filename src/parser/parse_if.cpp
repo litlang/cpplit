@@ -1,8 +1,8 @@
 #include "ast/statements/conditional_branch.hpp"
 
-#include "parser/parse_expression.hpp"
-#include "parser/parse_statement_block.hpp"
-#include "parser/check.hpp"
+#include "parse_expression.hpp"
+#include "parse_statement_block.hpp"
+#include "check.hpp"
 
 conditional_branch* parse_if(token_list& Token_list) {
 
@@ -17,6 +17,7 @@ conditional_branch* parse_if(token_list& Token_list) {
 	return new conditional_branch { Condition, block, Condition->BEGIN, block->END };
 }
 
+#include "ast/expressions/bool.hpp"
 conditional_branch* parse_else(token_list& Token_list) {
 
 	check::symbol::require(Token_list, token_symbol::type::BRACE_LEFT);

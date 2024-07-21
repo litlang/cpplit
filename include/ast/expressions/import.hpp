@@ -1,7 +1,6 @@
 #pragma once
 
 #include "semantic/class.hpp"
-#include "semantic/builtins.hpp"
 #include "semantic/environment.hpp"
 
 #include "utils/path.hpp"
@@ -10,6 +9,7 @@
 #include "runtime.hpp"
 
 #include "ast/expressions/expr.hpp"
+#include "ast/expressions/string.hpp"
 
 class import : public expr {
 public:

@@ -1,6 +1,6 @@
-#include "parser/namespace/parse_namespace.hpp"
-#include "parser/check.hpp"
-#include "parser/parse_defination.hpp"
+#include "namespace/parse_namespace.hpp"
+#include "check.hpp"
+#include "parse_defination.hpp"
 
 TYPE_namespace* parse_namespace(token_list& Token_list) {
 

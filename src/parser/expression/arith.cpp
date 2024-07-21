@@ -1,8 +1,8 @@
-#include "parser/parse_arith.hpp"
+#include "parse_arith.hpp"
 #include "ast/expressions/arith.hpp"
-#include "tokens/tokens.hpp"
+#include "tokens/symbol.hpp"
 
-#include "parser/parse_prefix.hpp"
+#include "parse_prefix.hpp"
 
 expr* parse_multi_divis(token_list& Token_list) {
 

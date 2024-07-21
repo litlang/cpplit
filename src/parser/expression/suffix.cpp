@@ -1,8 +1,8 @@
 #include "exceptions/syntax_errors.hpp"
 
-#include "parser/parse_suffix.hpp"
-#include "parser/parse_expression.hpp"
-#include "parser/check.hpp"
+#include "parse_suffix.hpp"
+#include "parse_expression.hpp"
+#include "check.hpp"
 
 #include "ast/expressions/member_access.hpp"
 #include "ast/expressions/call.hpp"

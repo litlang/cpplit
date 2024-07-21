@@ -1,12 +1,13 @@
-#include "parser/parse_prefix.hpp"
-#include "parser/parse_item.hpp"
-#include "parser/parse_arith.hpp"
-#include "parser/check.hpp"
-#include "parser/parse_comparation.hpp"
-#include "parser/check.hpp"
+#include "parse_prefix.hpp"
+#include "parse_item.hpp"
+#include "parse_arith.hpp"
+#include "check.hpp"
+#include "parse_comparation.hpp"
+#include "check.hpp"
 
 #include "ast/expressions/arith.hpp"
 #include "ast/expressions/logical.hpp"
+#include "ast/expressions/reference.hpp"
 
 
 expr* parse_prefix(token_list& Token_list) {
@@ -27,6 +28,12 @@ expr* parse_prefix(token_list& Token_list) {
 	else if (check::symbol::is(first, token_symbol::type::NOT)) {
 		Token_list.next();
 		return new logical_not { parse_comparation(Token_list), 0, 0 };
+	}
+
+	else if (check::symbol::is(first, token_symbol::type::AT)) {
+		Token_list.next();
+		expr* item = parse_prefix(Token_list);
+		return new reference { item, item->BEGIN, item->END };
 	}
 
 	else {

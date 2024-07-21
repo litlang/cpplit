@@ -1,6 +1,6 @@
-#include "parser/parse_expression.hpp"
-#include "parser/check.hpp"
-#include "parser/parse_defination.hpp"
+#include "parse_expression.hpp"
+#include "check.hpp"
+#include "parse_defination.hpp"
 
 defination* parse_defination(token_list& Token_list) {
 	if (dynamic_cast<token_identifier*> (Token_list.this_()) != NULL) {

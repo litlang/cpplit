@@ -3,18 +3,17 @@
 #include <map>
 
 #include "exceptions/fserrs.hpp"
-#include "utils/coding.hpp"
-#include "reader/reader.hpp"
+#include "codec.hpp"
 
 std::map<std::wstring, std::wstring> content_map;
 
 
-std::wstring read(std::wstring filepath, coding Coding) {
+std::wstring read(std::wstring filepath, codec_type Codec_type) {
 
 	std::string source;
 
 	std::ifstream file;
-	file.open(to_string(filepath), std::ios::in);
+	file.open(encode(filepath), std::ios::in);
 
 	if (! file.is_open()) {
 		throw new file_not_exists { filepath }; // perm access
@@ -26,7 +25,7 @@ std::wstring read(std::wstring filepath, coding Coding) {
 	}
 
 	file.close();
-	std::wstring result = to_wstring(source, Coding);
+	std::wstring result = decode(source, Codec_type);
 
 	content_map[filepath] = result;
 	return result;

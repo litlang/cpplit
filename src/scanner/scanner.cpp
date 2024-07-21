@@ -1,24 +1,24 @@
-#include "scanner/scanner.hpp"
-#include "scanner/scan_string.hpp"
+#include <string>
+#include <vector>
+#include <map>
 
-#include "utils/coding.hpp"
-#include "reader/reader.hpp"
+#include "tokens/token_list.hpp"
+#include "scan_string.hpp"
 
-#include "tokens/tokens.hpp"
+#include "codec.hpp"
+#include "reader.hpp"
+
+#include "tokens/keyword.hpp"
+#include "tokens/symbol.hpp"
+
 #include "utils/numcvt.hpp"
 #include "exceptions/lex_errors.hpp"
 
 #include "utils/ranges.hpp"
 #include "utils/null.hpp"
 
-#include <string>
-#include <vector>
-#include <map>
-
-#include <regex>
-
 #include "utils/position.hpp"
-#include "scanner/trie.hpp"
+#include "trie.hpp"
 
 ranges identifier_charset = {
 
@@ -79,14 +79,6 @@ std::map<std::wstring, bool> literal_bool_map = {
 	{ L"假", false },
 
 };
-
-
-/*namespace pats {
-
-	std::wregex num(L"^[0-9]+(\\.[0-9]+)?");
-
-};*/
-
 
 trie<token_symbol::type> symbol_map = {
 
@@ -177,7 +169,7 @@ trie<null> ignore_set = {
 token_list scan(std::wstring filepath) {
 
 	std::vector<token*> Token_list;
-	std::wstring src = read(filepath, coding::UTF_8);
+	std::wstring src = read(filepath, codec_type::UTF_8);
 
 	Token_list.push_back(new token_symbol {token_symbol::type::BOF_, 0, 0});
 
@@ -239,15 +231,13 @@ token_list scan(std::wstring filepath) {
 
 		// entity.literal.number
 		else if (digit_charset.include(src[i])) {
-
-/*			std::wsmatch regres;
-			std::wstring matchfrom = src.substr(i);
-
-			std::regex_search(matchfrom, regres, pats::num);
-			std::wstring s_val = regres.str();*/
-			int val = cvt_dec(src, i);
-
-			Token_list.push_back(new token_number { val, begin, i });
+			// int val = cvt_dec(src, i);
+			std::wstring val;
+			do {
+				val += src[i];
+				i += 1;
+			} while (digit_charset.include(src[i]));
+			Token_list.push_back(new token_number { encode(val), begin, i }); //!
 		}
 
 		// entity.identifier || keyword || literal

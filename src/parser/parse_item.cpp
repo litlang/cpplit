@@ -1,9 +1,15 @@
-#include "parser/parse_item.hpp"
+#include "parse_item.hpp"
 
-#include "parser/parse_suffix.hpp"
+#include "parse_suffix.hpp"
 
-#include "parser/parse_expression.hpp"
-#include "parser/check.hpp"
+#include "parse_expression.hpp"
+#include "check.hpp"
+
+
+#include "ast/expressions/number.hpp"
+#include "ast/expressions/string.hpp"
+#include "ast/expressions/bool.hpp"
+#include "ast/expressions/identifier.hpp"
 
 expr_entity* make_entity(token_entity* Token) {
 	
@@ -29,8 +35,9 @@ expr_entity* make_entity(token_entity* Token) {
 
 }
 
-#include "parser/parse_import.hpp"
-#include "parser/namespace/parse_namespace.hpp"
+#include "parse_import.hpp"
+#include "namespace/parse_namespace.hpp"
+#include "parse_func.hpp"
 
 expr* parse_miditem(token_list& Token_list) {
 	expr* result;
@@ -52,8 +59,12 @@ expr* parse_miditem(token_list& Token_list) {
 			result = parse_namespace(Token_list);
 		}
 
+		else if (kw->Type == token_keyword::type::FUNC) {
+			result = parse_func(Token_list);
+		}
+
 		else {
-			throw L"not expr kw";
+			throw "not expr kw";
 		}
 	}
 

@@ -5,7 +5,7 @@
 #include "exceptions/exception.hpp"
 #include "utils/position.hpp"
 
-#include "tokens/tokens.hpp"
+#include "tokens/symbol.hpp"
 
 class syntax_error : public exception {
 
