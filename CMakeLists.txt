@@ -7,6 +7,10 @@ project(lit)
 # source
 set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
+# tokens
+add_library(${PROJECT_NAME}_tokens INTERFACE)
+target_include_directories(${PROJECT_NAME}_tokens INTERFACE "${SOURCE_DIR}/tokens/include")
+
 ## file reader
 file(GLOB_RECURSE READER_SOURCES "${SOURCE_DIR}/reader/*.cpp")
 add_library(${PROJECT_NAME}_reader STATIC ${READER_SOURCES})
@@ -21,9 +25,11 @@ list(FILTER SCANNER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES})
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE include)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/codec/include)
+target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
+
 target_include_directories(${PROJECT_NAME}_scanner INTERFACE ${SOURCE_DIR}/scanner/interface)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${SOURCE_DIR}/scanner/include)
-target_link_libraries(${PROJECT_NAME}_scanner ${PROJECT_NAME}_reader)
+target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_reader)
 
 ## parser
 file(GLOB_RECURSE PARSER_SOURCES "${SOURCE_DIR}/parser/*.cpp")
@@ -34,7 +40,8 @@ target_include_directories(${PROJECT_NAME}_parser PRIVATE include)
 target_include_directories(${PROJECT_NAME}_parser PRIVATE deps/codec/include)
 target_include_directories(${PROJECT_NAME}_parser INTERFACE ${SOURCE_DIR}/parser/interface)
 target_include_directories(${PROJECT_NAME}_parser PRIVATE ${SOURCE_DIR}/parser/include)
-target_link_libraries(${PROJECT_NAME}_parser ${PROJECT_NAME}_scanner)
+target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)
+target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_scanner)
 
 ## other
 file(GLOB_RECURSE AST_SOURCES "${SOURCE_DIR}/ast/*.cpp")
@@ -63,17 +70,16 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".so" ".lib" ".dll" ".dylib")
 set(GMP_DIR ${DEPS_DIR}/gmp)
 include_directories(${GMP_DIR}/include)
 
-find_library(GMP_LIBRARY gmp ${GMP_DIR}/lib)
+find_library(GMP_LIBRARY gmp ${GMP_DIR}/lib) # no-default-path required
 find_library(GMPXX_LIBRARY gmpxx ${GMP_DIR}/lib)
 
 target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY} ${GMP_LIBRARY})
 
 ## Losh Library
 set(LOSH_DIR ${DEPS_DIR}/losh)
-include_directories(${LOSH_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${LOSH_DIR}/include)
 
 find_library(LOSH_LIBRARY NAMES losh PATHS ${LOSH_DIR}/lib NO_DEFAULT_PATH REQUIRED)
-target_link_libraries(${PROJECT_NAME} ${LOSH_LIBRARY})
 
 ## codec Library
 set(CODEC_DIR ${DEPS_DIR}/codec)
@@ -83,7 +89,10 @@ target_link_libraries(${PROJECT_NAME}_reader PUBLIC ${CODEC_LIBRARY}) # 资源�
 
 
 ##..
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_scanner) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_parser)
+target_link_libraries(${PROJECT_NAME} ${LOSH_LIBRARY})
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_tokens) #ast
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-static" LINK_SEARCH_START_STATIC TRUE LINK_SEARCH_END_STATIC TRUE)

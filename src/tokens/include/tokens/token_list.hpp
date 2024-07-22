@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "./tokens/token.hpp" //!
+#include "token.hpp"
 
 class token_list {
 public:

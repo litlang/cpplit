@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include "./token.hpp"
+#include "token.hpp"
 
 class token_keyword : public token {
 public:

@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include "./token.hpp"
+#include "token.hpp"
 
 class token_symbol : public token {
 public:
