@@ -44,8 +44,17 @@ target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_scanner)
 
 ## other
+
+## ast
 file(GLOB_RECURSE AST_SOURCES "${SOURCE_DIR}/ast/*.cpp")
 list(FILTER AST_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
+
+add_library(${PROJECT_NAME}_ast STATIC ${AST_SOURCES})
+target_include_directories(${PROJECT_NAME}_ast PUBLIC "${SOURCE_DIR}/ast/include")
+target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_tokens)
+target_include_directories(${PROJECT_NAME}_ast PRIVATE deps/codec/include)
+target_include_directories(${PROJECT_NAME}_ast PRIVATE include) #..
+
 
 file(GLOB_RECURSE SEMANTIC_SOURCES "${SOURCE_DIR}/semantic/*.cpp")
 list(FILTER SEMANTIC_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
@@ -56,10 +65,13 @@ list(FILTER UTILS_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 file(GLOB_RECURSE UI_SOURCES "${SOURCE_DIR}/ui/*.cpp")
 list(FILTER UI_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
-add_executable(${PROJECT_NAME} ${AST_SOURCES} ${SEMANTIC_SOURCES} ${UTILS_SOURCES} ${UI_SOURCES})
+add_executable(${PROJECT_NAME} ${SEMANTIC_SOURCES} ${UTILS_SOURCES} ${UI_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}/ui/include")
 target_include_directories(${PROJECT_NAME} PRIVATE deps/codec/include)
+
+
+target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_ast)
 
 
 # Dependencies
@@ -85,14 +97,13 @@ find_library(LOSH_LIBRARY NAMES losh PATHS ${LOSH_DIR}/lib NO_DEFAULT_PATH REQUI
 set(CODEC_DIR ${DEPS_DIR}/codec)
 find_library(CODEC_LIBRARY NAMES codec PATHS ${CODEC_DIR}/lib NO_DEFAULT_PATH REQUIRED)
 target_link_libraries(${PROJECT_NAME}_reader PUBLIC ${CODEC_LIBRARY}) # 资源会浪费吗？
-# target_link_libraries(${PROJECT_NAME} ${CODEC_LIBRARY})
-
 
 ##..
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_scanner) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_parser)
 target_link_libraries(${PROJECT_NAME} ${LOSH_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_tokens) #ast
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_tokens) #ui/main
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_ast)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-static" LINK_SEARCH_START_STATIC TRUE LINK_SEARCH_END_STATIC TRUE)
