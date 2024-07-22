@@ -1,4 +1,4 @@
-# Compilation
+# Compilation The Lit Project
 
 ## Preparation
 
