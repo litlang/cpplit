@@ -55,9 +55,13 @@ target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_tokens)
 target_include_directories(${PROJECT_NAME}_ast PRIVATE deps/codec/include)
 target_include_directories(${PROJECT_NAME}_ast PRIVATE include) #..
 
-
+## semantic (data model)
 file(GLOB_RECURSE SEMANTIC_SOURCES "${SOURCE_DIR}/semantic/*.cpp")
 list(FILTER SEMANTIC_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
+add_library(${PROJECT_NAME}_semantic STATIC ${SEMANTIC_SOURCES})
+target_include_directories(${PROJECT_NAME}_semantic PUBLIC "${SOURCE_DIR}/semantic/include")
+target_include_directories(${PROJECT_NAME}_semantic PRIVATE deps/codec/include)
+target_include_directories(${PROJECT_NAME}_semantic PRIVATE include) #..utils
 
 file(GLOB_RECURSE UTILS_SOURCES "${SOURCE_DIR}/utils/*.cpp")
 list(FILTER UTILS_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
@@ -65,13 +69,16 @@ list(FILTER UTILS_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 file(GLOB_RECURSE UI_SOURCES "${SOURCE_DIR}/ui/*.cpp")
 list(FILTER UI_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
-add_executable(${PROJECT_NAME} ${SEMANTIC_SOURCES} ${UTILS_SOURCES} ${UI_SOURCES})
+add_executable(${PROJECT_NAME} ${UTILS_SOURCES} ${UI_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}/ui/include")
 target_include_directories(${PROJECT_NAME} PRIVATE deps/codec/include)
 
 
+target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_semantic)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_ast)
+target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_semantic)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_semantic) #utils/call_method need
 
 
 # Dependencies
@@ -80,12 +87,10 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".so" ".lib" ".dll" ".dylib")
 
 ## GMP Library
 set(GMP_DIR ${DEPS_DIR}/gmp)
-include_directories(${GMP_DIR}/include)
 
 find_library(GMP_LIBRARY gmp ${GMP_DIR}/lib) # no-default-path required
 find_library(GMPXX_LIBRARY gmpxx ${GMP_DIR}/lib)
 
-target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY} ${GMP_LIBRARY})
 
 ## Losh Library
 set(LOSH_DIR ${DEPS_DIR}/losh)
@@ -104,6 +109,14 @@ target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_parser)
 target_link_libraries(${PROJECT_NAME} ${LOSH_LIBRARY})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_tokens) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_ast)
+
+
+include_directories(${GMP_DIR}/include)#..
+
+target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY} ${GMP_LIBRARY})
+target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${GMP_LIBRARY})
+target_link_libraries(${PROJECT_NAME}_semantic PRIVATE ${GMP_LIBRARY})
+
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-static" LINK_SEARCH_START_STATIC TRUE LINK_SEARCH_END_STATIC TRUE)
