@@ -4,45 +4,67 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(lit)
 
+# Dependencies
+set(DEPS_DIR ${PROJECT_SOURCE_DIR}/deps) # set dependencies directory
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".so" ".lib" ".dll" ".dylib")
+
+## GMP
+set(GMP_DIR ${DEPS_DIR}/gmp)
+find_library(GMP_LIBRARY NAMES gmp PATHS ${GMP_DIR}/lib NO_DEFAULT_PATH REQUIRED) 
+find_library(GMPXX_LIBRARY NAMES gmpxx PATHS ${GMP_DIR}/lib NO_DEFAULT_PATH REQUIRED)
+
+## Losh
+set(LOSH_DIR ${DEPS_DIR}/losh)
+find_library(LOSH_LIBRARY NAMES losh PATHS ${LOSH_DIR}/lib NO_DEFAULT_PATH REQUIRED)
+
+## codec
+set(CODEC_DIR ${DEPS_DIR}/codec)
+find_library(CODEC_LIBRARY NAMES codec PATHS ${CODEC_DIR}/lib NO_DEFAULT_PATH REQUIRED)
+
+## number_converter
+set(NUMBER_CONVERTER_DIR ${DEPS_DIR}/number_converter)
+find_library(NUMBER_CONVERTER_LIBRARY NAMES number_converter PATHS ${NUMBER_CONVERTER_DIR}/lib NO_DEFAULT_PATH REQUIRED)
+
+
 include_directories("src/exceptions") #..
 include_directories("include/language") #..
 
-# source
+# sources
 set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
-# tokens
+## tokens
 add_library(${PROJECT_NAME}_tokens INTERFACE)
 target_include_directories(${PROJECT_NAME}_tokens INTERFACE "${SOURCE_DIR}/tokens/include")
+
+target_include_directories(${PROJECT_NAME}_tokens INTERFACE ${CODEC_DIR}/include)
 
 ## file reader
 set(READER_DIR "${SOURCE_DIR}/reader")
 file(GLOB_RECURSE READER_SOURCES "${READER_DIR}/implement/*.cpp")
 add_library(${PROJECT_NAME}_reader STATIC ${READER_SOURCES})
+
 target_include_directories(${PROJECT_NAME}_reader PRIVATE "${READER_DIR}/internal")
 target_include_directories(${PROJECT_NAME}_reader INTERFACE "${READER_DIR}/interface")
-target_include_directories(${PROJECT_NAME}_reader PRIVATE deps/codec/include)#..
 
+target_include_directories(${PROJECT_NAME}_reader PRIVATE ${CODEC_DIR}/include)#..
+target_link_libraries(${PROJECT_NAME}_reader PUBLIC ${CODEC_LIBRARY}) # 资源会浪费吗？
 
 ## scanner
 set(SCANNER_DIR "${SOURCE_DIR}/scanner")
-
 file(GLOB_RECURSE SCANNER_SOURCES "${SCANNER_DIR}/implement/*.cpp")
 list(FILTER SCANNER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
-
 add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES}) # scanner_lib?
 
 target_include_directories(${PROJECT_NAME}_scanner INTERFACE "${SCANNER_DIR}/interface")
 target_include_directories(${PROJECT_NAME}_scanner PUBLIC "${SCANNER_DIR}/include")
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SCANNER_DIR}/internal")
 
-
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/codec/include)
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${CODEC_DIR}/include)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/number_converter/include)
+target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_LIBRARY})
 
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
-
-
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_reader)
 
 ## parser
@@ -56,12 +78,10 @@ target_include_directories(${PROJECT_NAME}_parser PUBLIC "${PARSER_DIR}/include"
 target_include_directories(${PROJECT_NAME}_parser PRIVATE "${PARSER_DIR}/internal")
 
 target_include_directories(${PROJECT_NAME}_parser PRIVATE include) #utils/position
-target_include_directories(${PROJECT_NAME}_parser PRIVATE deps/codec/include)
+target_include_directories(${PROJECT_NAME}_parser PRIVATE ${CODEC_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_scanner)
-
-## other
 
 ## ast
 file(GLOB_RECURSE AST_SOURCES "${SOURCE_DIR}/ast/*.cpp")
@@ -69,19 +89,26 @@ list(FILTER AST_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_ast STATIC ${AST_SOURCES})
 target_include_directories(${PROJECT_NAME}_ast PUBLIC "${SOURCE_DIR}/ast/include")
+
 target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_tokens)
-target_include_directories(${PROJECT_NAME}_ast PRIVATE deps/codec/include)
 target_include_directories(${PROJECT_NAME}_ast PRIVATE include) #..
+
+target_include_directories(${PROJECT_NAME}_ast PRIVATE ${CODEC_DIR}/include)
 
 ## semantic (data model)
 file(GLOB_RECURSE SEMANTIC_SOURCES "${SOURCE_DIR}/semantic/*.cpp")
 list(FILTER SEMANTIC_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 add_library(${PROJECT_NAME}_semantic STATIC ${SEMANTIC_SOURCES})
 target_include_directories(${PROJECT_NAME}_semantic PUBLIC "${SOURCE_DIR}/semantic/include")
-target_include_directories(${PROJECT_NAME}_semantic PRIVATE deps/codec/include)
 target_include_directories(${PROJECT_NAME}_semantic PRIVATE include) #..utils
 
-file(GLOB_RECURSE UTILS_SOURCES "${SOURCE_DIR}/utils/*.cpp")
+target_include_directories(${PROJECT_NAME}_semantic PRIVATE ${CODEC_DIR}/include) # or link library?
+
+target_include_directories(${PROJECT_NAME}_semantic PUBLIC ${GMP_DIR}/include)
+target_link_libraries(${PROJECT_NAME}_semantic PRIVATE ${GMP_LIBRARY}) #gmpxx?
+
+
+file(GLOB_RECURSE UTILS_SOURCES "${SOURCE_DIR}/utils/*.cpp") #!
 list(FILTER UTILS_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 file(GLOB_RECURSE UI_SOURCES "${SOURCE_DIR}/ui/*.cpp")
@@ -90,55 +117,22 @@ list(FILTER UI_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 add_executable(${PROJECT_NAME} ${UTILS_SOURCES} ${UI_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}/ui/include")
-target_include_directories(${PROJECT_NAME} PRIVATE deps/codec/include)
 
 
 target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_semantic)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_ast)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_semantic)
+
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_semantic) #utils/call_method need
-
-
-# Dependencies
-set(DEPS_DIR ${PROJECT_SOURCE_DIR}/deps) # set dependencies directory
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".so" ".lib" ".dll" ".dylib")
-
-## GMP Library
-set(GMP_DIR ${DEPS_DIR}/gmp)
-
-find_library(GMP_LIBRARY gmp ${GMP_DIR}/lib) # no-default-path required
-find_library(GMPXX_LIBRARY gmpxx ${GMP_DIR}/lib)
-
-
-## Losh Library
-set(LOSH_DIR ${DEPS_DIR}/losh)
-target_include_directories(${PROJECT_NAME} PRIVATE ${LOSH_DIR}/include)
-
-find_library(LOSH_LIBRARY NAMES losh PATHS ${LOSH_DIR}/lib NO_DEFAULT_PATH REQUIRED)
-
-## codec Library
-set(CODEC_DIR ${DEPS_DIR}/codec)
-find_library(CODEC_LIBRARY NAMES codec PATHS ${CODEC_DIR}/lib NO_DEFAULT_PATH REQUIRED)
-target_link_libraries(${PROJECT_NAME}_reader PUBLIC ${CODEC_LIBRARY}) # 资源会浪费吗？
-
-## number_converter
-set(NUMBER_CONVERTER_DIR ${DEPS_DIR}/number_converter)
-find_library(NUMBER_CONVERTER_LIBRARY NAMES number_converter PATHS ${NUMBER_CONVERTER_DIR}/lib NO_DEFAULT_PATH REQUIRED)
-
-##..
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_scanner) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_parser)
-target_link_libraries(${PROJECT_NAME} ${LOSH_LIBRARY})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_tokens) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_ast)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${LOSH_DIR}/include) #ui
+target_link_libraries(${PROJECT_NAME} ${LOSH_LIBRARY})
 
-include_directories(${GMP_DIR}/include)#..
-
-target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY} ${GMP_LIBRARY})
-target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_LIBRARY})
-target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${GMP_LIBRARY})
-target_link_libraries(${PROJECT_NAME}_semantic PRIVATE ${GMP_LIBRARY})
+target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY} ${GMP_LIBRARY}) # ui temp?
 
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -150,6 +144,8 @@ install(TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
 )
+install(DIRECTORY src/scanner/include/ src/scanner/interface/ DESTINATION include/scanner)
+install(DIRECTORY src/parser/include/ src/parser/interface/ DESTINATION include/parser)
 
 add_custom_target(uninstall
   COMMAND xargs rm < install_manifest.txt

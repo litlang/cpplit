@@ -1,4 +1,3 @@
-#include <gmpxx.h>
 #include "ast/expressions/number.hpp"
 #include "semantic/builtin/number.hpp"
 
