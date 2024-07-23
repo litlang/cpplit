@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(lit)
 
-include_directories("include/exceptions") #..
+include_directories("src/exceptions") #..
 include_directories("include/language") #..
 
 # source
@@ -41,7 +41,7 @@ file(GLOB_RECURSE PARSER_SOURCES "${SOURCE_DIR}/parser/*.cpp")
 list(FILTER PARSER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_parser STATIC ${PARSER_SOURCES})
-target_include_directories(${PROJECT_NAME}_parser PRIVATE include)
+target_include_directories(${PROJECT_NAME}_parser PRIVATE include) #utils/position
 target_include_directories(${PROJECT_NAME}_parser PRIVATE deps/codec/include)
 target_include_directories(${PROJECT_NAME}_parser INTERFACE ${SOURCE_DIR}/parser/interface)
 target_include_directories(${PROJECT_NAME}_parser PRIVATE ${SOURCE_DIR}/parser/include)

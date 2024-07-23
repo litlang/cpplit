@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "exceptions/exception.hpp"
+#include "exception.hpp"
 #include "utils/position.hpp"
 
 #include "tokens/symbol.hpp"

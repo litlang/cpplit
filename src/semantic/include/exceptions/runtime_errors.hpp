@@ -1,6 +1,6 @@
 #pragma once
 
-#include "exceptions/exception.hpp"
+#include "exception.hpp"
 
 class runtime_error : public exception {};
 
