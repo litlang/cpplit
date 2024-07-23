@@ -15,22 +15,25 @@ add_library(${PROJECT_NAME}_tokens INTERFACE)
 target_include_directories(${PROJECT_NAME}_tokens INTERFACE "${SOURCE_DIR}/tokens/include")
 
 ## file reader
-file(GLOB_RECURSE READER_SOURCES "${SOURCE_DIR}/reader/*.cpp")
+set(READER_DIR "${SOURCE_DIR}/reader")
+file(GLOB_RECURSE READER_SOURCES "${READER_DIR}/*.cpp")
 add_library(${PROJECT_NAME}_reader STATIC ${READER_SOURCES})
-target_include_directories(${PROJECT_NAME}_reader PRIVATE "${SOURCE_DIR}/reader/internal")
-
+target_include_directories(${PROJECT_NAME}_reader PRIVATE "${READER_DIR}/internal")
+target_include_directories(${PROJECT_NAME}_reader INTERFACE "${READER_DIR}/interface")
 target_include_directories(${PROJECT_NAME}_reader PRIVATE deps/codec/include)#..
-target_include_directories(${PROJECT_NAME}_reader INTERFACE ${SOURCE_DIR}/reader/interface)
+
 
 ## scanner
-file(GLOB_RECURSE SCANNER_SOURCES "${SOURCE_DIR}/scanner/implement/*.cpp")
+set(SCANNER_DIR "${SOURCE_DIR}/scanner")
+
+file(GLOB_RECURSE SCANNER_SOURCES "${SCANNER_DIR}/implement/*.cpp")
 list(FILTER SCANNER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
-add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES})
+add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES}) # scanner_lib?
 
-target_include_directories(${PROJECT_NAME}_scanner INTERFACE ${SOURCE_DIR}/scanner/interface)
-target_include_directories(${PROJECT_NAME}_scanner PUBLIC ${SOURCE_DIR}/scanner/include)
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${SOURCE_DIR}/scanner/internal)
+target_include_directories(${PROJECT_NAME}_scanner INTERFACE "${SCANNER_DIR}/interface")
+target_include_directories(${PROJECT_NAME}_scanner PUBLIC "${SCANNER_DIR}/include")
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SCANNER_DIR}/internal")
 
 
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
@@ -43,13 +46,14 @@ target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_reader)
 
 ## parser
-file(GLOB_RECURSE PARSER_SOURCES "${SOURCE_DIR}/parser/implement/*.cpp")
+set(PARSER_DIR "${SOURCE_DIR}/parser")
+file(GLOB_RECURSE PARSER_SOURCES "${PARSER_DIR}/implement/*.cpp")
 list(FILTER PARSER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_parser STATIC ${PARSER_SOURCES})
-target_include_directories(${PROJECT_NAME}_parser INTERFACE ${SOURCE_DIR}/parser/interface)
-target_include_directories(${PROJECT_NAME}_parser PUBLIC ${SOURCE_DIR}/parser/include)
-target_include_directories(${PROJECT_NAME}_parser PRIVATE ${SOURCE_DIR}/parser/internal)
+target_include_directories(${PROJECT_NAME}_parser INTERFACE "${PARSER_DIR}/interface")
+target_include_directories(${PROJECT_NAME}_parser PUBLIC "${PARSER_DIR}/include")
+target_include_directories(${PROJECT_NAME}_parser PRIVATE "${PARSER_DIR}/internal")
 
 target_include_directories(${PROJECT_NAME}_parser PRIVATE include) #utils/position
 target_include_directories(${PROJECT_NAME}_parser PRIVATE deps/codec/include)
