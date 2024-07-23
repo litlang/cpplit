@@ -2,8 +2,8 @@
 
 #include <sstream>
 
-#include "exceptions/exception.hpp"
-#include "language/language.hpp"
+#include "exception.hpp"
+#include "language.hpp"
 
 
 class fs_err : public exception {};

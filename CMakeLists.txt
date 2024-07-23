@@ -4,6 +4,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(lit)
 
+include_directories("include/exceptions") #..
+include_directories("include/language") #..
+
 # source
 set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
@@ -14,7 +17,8 @@ target_include_directories(${PROJECT_NAME}_tokens INTERFACE "${SOURCE_DIR}/token
 ## file reader
 file(GLOB_RECURSE READER_SOURCES "${SOURCE_DIR}/reader/*.cpp")
 add_library(${PROJECT_NAME}_reader STATIC ${READER_SOURCES})
-target_include_directories(${PROJECT_NAME}_reader PRIVATE include)
+target_include_directories(${PROJECT_NAME}_reader PRIVATE "${SOURCE_DIR}/reader/internal")
+
 target_include_directories(${PROJECT_NAME}_reader PRIVATE deps/codec/include)#..
 target_include_directories(${PROJECT_NAME}_reader INTERFACE ${SOURCE_DIR}/reader/interface)
 
