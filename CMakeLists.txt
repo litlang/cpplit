@@ -27,24 +27,32 @@ file(GLOB_RECURSE SCANNER_SOURCES "${SOURCE_DIR}/scanner/*.cpp")
 list(FILTER SCANNER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES})
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/codec/include)
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/number_converter/include)
-target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
 
 target_include_directories(${PROJECT_NAME}_scanner INTERFACE ${SOURCE_DIR}/scanner/interface)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${SOURCE_DIR}/scanner/include)
+
+
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/codec/include)
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/number_converter/include)
+
+target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
+
+
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_reader)
 
 ## parser
-file(GLOB_RECURSE PARSER_SOURCES "${SOURCE_DIR}/parser/*.cpp")
+file(GLOB_RECURSE PARSER_SOURCES "${SOURCE_DIR}/parser/implement/*.cpp")
 list(FILTER PARSER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_parser STATIC ${PARSER_SOURCES})
+target_include_directories(${PROJECT_NAME}_parser INTERFACE ${SOURCE_DIR}/parser/interface)
+target_include_directories(${PROJECT_NAME}_parser PUBLIC ${SOURCE_DIR}/parser/include)
+target_include_directories(${PROJECT_NAME}_parser PRIVATE ${SOURCE_DIR}/parser/internal)
+
 target_include_directories(${PROJECT_NAME}_parser PRIVATE include) #utils/position
 target_include_directories(${PROJECT_NAME}_parser PRIVATE deps/codec/include)
-target_include_directories(${PROJECT_NAME}_parser INTERFACE ${SOURCE_DIR}/parser/interface)
-target_include_directories(${PROJECT_NAME}_parser PRIVATE ${SOURCE_DIR}/parser/include)
+
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_scanner)
 
