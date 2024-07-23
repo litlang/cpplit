@@ -27,8 +27,9 @@ file(GLOB_RECURSE SCANNER_SOURCES "${SOURCE_DIR}/scanner/*.cpp")
 list(FILTER SCANNER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES})
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE include)
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/codec/include)
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/number_converter/include)
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
 
 target_include_directories(${PROJECT_NAME}_scanner INTERFACE ${SOURCE_DIR}/scanner/interface)
@@ -107,6 +108,10 @@ set(CODEC_DIR ${DEPS_DIR}/codec)
 find_library(CODEC_LIBRARY NAMES codec PATHS ${CODEC_DIR}/lib NO_DEFAULT_PATH REQUIRED)
 target_link_libraries(${PROJECT_NAME}_reader PUBLIC ${CODEC_LIBRARY}) # 资源会浪费吗？
 
+## number_converter
+set(NUMBER_CONVERTER_DIR ${DEPS_DIR}/number_converter)
+find_library(NUMBER_CONVERTER_LIBRARY NAMES number_converter PATHS ${NUMBER_CONVERTER_DIR}/lib NO_DEFAULT_PATH REQUIRED)
+
 ##..
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_scanner) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_parser)
@@ -118,6 +123,7 @@ target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_ast)
 include_directories(${GMP_DIR}/include)#..
 
 target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY} ${GMP_LIBRARY})
+target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_LIBRARY})
 target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${GMP_LIBRARY})
 target_link_libraries(${PROJECT_NAME}_semantic PRIVATE ${GMP_LIBRARY})
 

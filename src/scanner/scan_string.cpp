@@ -3,7 +3,7 @@
 #include "exceptions/lex_errors.hpp"
 
 #include "scan_string.hpp"
-#include "utils/numcvt.hpp"
+#include "numcvt.hpp"
 
 #include "utils/position.hpp"
 

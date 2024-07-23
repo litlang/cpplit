@@ -12,7 +12,7 @@
 
 
 #include "scanner.hpp"
-#include "exceptions/lex_errors.hpp"
+// #include "exceptions/lex_errors.hpp"
 
 #include "parser.hpp"
 #include "ast/node.hpp"

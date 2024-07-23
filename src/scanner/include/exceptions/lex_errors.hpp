@@ -4,12 +4,12 @@
 #include <map>
 #include <sstream>
 
-#include "exceptions/exception.hpp"
+#include "exception.hpp"
 
-#include "language/language.hpp"
+#include "language.hpp"
 
 #include "utils/position.hpp"
-#include "utils/number_convert.hpp"
+#include "number_convert.hpp"
 
 
 class lexical_error : public exception {
