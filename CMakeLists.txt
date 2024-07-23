@@ -23,13 +23,14 @@ target_include_directories(${PROJECT_NAME}_reader PRIVATE deps/codec/include)#..
 target_include_directories(${PROJECT_NAME}_reader INTERFACE ${SOURCE_DIR}/reader/interface)
 
 ## scanner
-file(GLOB_RECURSE SCANNER_SOURCES "${SOURCE_DIR}/scanner/*.cpp")
+file(GLOB_RECURSE SCANNER_SOURCES "${SOURCE_DIR}/scanner/implement/*.cpp")
 list(FILTER SCANNER_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_scanner STATIC ${SCANNER_SOURCES})
 
 target_include_directories(${PROJECT_NAME}_scanner INTERFACE ${SOURCE_DIR}/scanner/interface)
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${SOURCE_DIR}/scanner/include)
+target_include_directories(${PROJECT_NAME}_scanner PUBLIC ${SOURCE_DIR}/scanner/include)
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${SOURCE_DIR}/scanner/internal)
 
 
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
