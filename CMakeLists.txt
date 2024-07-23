@@ -16,7 +16,7 @@ target_include_directories(${PROJECT_NAME}_tokens INTERFACE "${SOURCE_DIR}/token
 
 ## file reader
 set(READER_DIR "${SOURCE_DIR}/reader")
-file(GLOB_RECURSE READER_SOURCES "${READER_DIR}/*.cpp")
+file(GLOB_RECURSE READER_SOURCES "${READER_DIR}/implement/*.cpp")
 add_library(${PROJECT_NAME}_reader STATIC ${READER_SOURCES})
 target_include_directories(${PROJECT_NAME}_reader PRIVATE "${READER_DIR}/internal")
 target_include_directories(${PROJECT_NAME}_reader INTERFACE "${READER_DIR}/interface")
