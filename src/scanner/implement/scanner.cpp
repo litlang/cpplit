@@ -15,7 +15,6 @@
 #include "exceptions/lex_errors.hpp"
 
 #include "utils/ranges.hpp"
-#include "utils/null.hpp"
 
 #include "utils/position.hpp"
 #include "trie.hpp"
@@ -161,10 +160,17 @@ trie<token_symbol::type> symbol_map = {
 
 };
 
-trie<null> ignore_set = {
-	{ L" ", Null },
-	{ L"\t", Null },
+trie<bool> ignore_set = {
+	{ L" ", true },
+	{ L"\t", true },
 };
+
+/*
+trie ignore_set = {
+	L" ",
+	L"\t",
+};
+*/
 
 token_list scan(std::wstring filepath) {
 
