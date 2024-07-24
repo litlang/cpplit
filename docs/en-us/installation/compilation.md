@@ -1,4 +1,4 @@
-# Compilation The Lit Project
+# Compiling The Lit Project
 
 ## Preparation
 
@@ -49,14 +49,15 @@ You can download or compile dependencies for platforms you need. The dependencie
 |:----:|:---------:|:---:|
 | GMP  | Required  | <https://gmplib.org> |
 | codec| Required  | <https://github.com/litlang/codec> |
-| losh | Required  | <https://github.com/litlang/losh |
+| losh | Required  | <https://github.com/litlang/losh> |
+| number_converter | Required  | <https://github.com/litlang/number_converter> |
 
 If you don't want to collect them by yourself, you can download them all from <https://github.com/litlang/cpplit-deps>.  
 The filename format is `<project-name>/<os>-<cpu-arch>-<os-bit-arch>.zip`, such as `losh/linux-x86-64.zip`.
 
 Tips: I use JSdelivr to download them from github.
 
-Then, put them into deps/ directory. (Like deps/losh)
+Then, put them into deps/ directory. (e.g. deps/losh)
 
 ## CMake Compilation
 
@@ -73,7 +74,7 @@ CMake usage: `cmake [options] <project-direcory>`
 <!---->
 options:
 - -DCMAKE_INSTALL_PREFIX: destinate directory which you want to install to. Default depends on your system. (e.g. [Linux] /usr/local/bin)
-- -DCMAKE_BUILD_TYPE: ...
+- -DCMAKE_BUILD_TYPE: Debug | Release | MinSizeRel | RelWithDebInfo
 
 ## Test
 
