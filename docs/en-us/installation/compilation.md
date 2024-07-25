@@ -51,6 +51,8 @@ You can download or compile dependencies for platforms you need. The dependencie
 | codec| Required  | <https://github.com/litlang/codec> |
 | losh | Required  | <https://github.com/litlang/losh> |
 | number_converter | Required  | <https://github.com/litlang/number_converter> |
+|ranges| Required  | <https://github.com/litlang/utils> |
+| trie | Required  | <https://github.com/litlang/utils> |
 
 If you don't want to collect them by yourself, you can download them all from <https://github.com/litlang/cpplit-deps>.  
 The filename format is `<project-name>/<os>-<cpu-arch>-<os-bit-arch>.zip`, such as `losh/linux-x86-64.zip`.
