@@ -95,11 +95,13 @@ target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_scanner)
 
 ## ast
-file(GLOB_RECURSE AST_SOURCES "${SOURCE_DIR}/ast/*.cpp")
+set(AST_DIR "${SOURCE_DIR}/ast")
+file(GLOB_RECURSE AST_SOURCES "${AST_DIR}/implement/*.cpp")
 list(FILTER AST_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_library(${PROJECT_NAME}_ast STATIC ${AST_SOURCES})
-target_include_directories(${PROJECT_NAME}_ast PUBLIC "${SOURCE_DIR}/ast/include")
+target_include_directories(${PROJECT_NAME}_ast PUBLIC "${AST_DIR}/include")
+target_include_directories(${PROJECT_NAME}_ast PRIVATE "${AST_DIR}/internal")
 
 target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_tokens)
 target_include_directories(${PROJECT_NAME}_ast PRIVATE include) #..
@@ -115,17 +117,13 @@ target_include_directories(${PROJECT_NAME}_semantic PRIVATE include) #..utils
 
 target_include_directories(${PROJECT_NAME}_semantic PRIVATE ${CODEC_DIR}/include) # or link library?
 
-target_include_directories(${PROJECT_NAME}_semantic PUBLIC ${GMP_DIR}/include)
+target_include_directories(${PROJECT_NAME}_semantic PUBLIC ${GMP_DIR}/include) #..
 target_link_libraries(${PROJECT_NAME}_semantic PRIVATE ${GMP_LIBRARY}) #gmpxx?
-
-
-file(GLOB_RECURSE UTILS_SOURCES "${SOURCE_DIR}/utils/*.cpp") #!
-list(FILTER UTILS_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 file(GLOB_RECURSE UI_SOURCES "${SOURCE_DIR}/ui/*.cpp")
 list(FILTER UI_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
-add_executable(${PROJECT_NAME} ${UTILS_SOURCES} ${UI_SOURCES})
+add_executable(${PROJECT_NAME} ${UI_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}/ui/include")
 

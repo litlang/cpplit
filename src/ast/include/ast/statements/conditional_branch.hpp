@@ -3,7 +3,6 @@
 #include "ast/expressions/expr.hpp"
 #include "ast/statements/statement.hpp"
 #include "ast/statements/statement_block.hpp"
-#include "utils/call_method.hpp"
 
 class conditional_branch : public statement {
 public:
@@ -37,24 +36,5 @@ public:
 		return result;
 	}
 
-	void exec(environment env, const runtime& Runtime) {
-		for (auto branch : this->BRANCHES) {
-			semantic_object* condition = dynamic_cast<semantic_object*> (branch->CONDITION->eval(env, Runtime));
-			semantic_object* interface;
-
-			try {
-				interface = call_method(condition, L"bool");
-			}
-			catch (const char*) {
-				throw "no impl: bool()";
-			}
-
-			bool result = dynamic_cast<builtin_object_bool*> (interface) -> data;
-
-			if (result) {
-				branch->BLOCK->exec(env, Runtime);
-				break;
-			}
-		}
-	};
+	void exec(environment env, const runtime& Runtime);
 };
