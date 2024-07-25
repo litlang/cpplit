@@ -19,7 +19,6 @@
 #include "semantic/class.hpp"
 #include "semantic/environment.hpp"
 
-#include "utils/ranges.hpp"
 #include "losh.hpp"
 
 #include "helper/helper.hpp"

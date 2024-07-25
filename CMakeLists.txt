@@ -25,6 +25,12 @@ find_library(CODEC_LIBRARY NAMES codec PATHS ${CODEC_DIR}/lib NO_DEFAULT_PATH RE
 set(NUMBER_CONVERTER_DIR ${DEPS_DIR}/number_converter)
 find_library(NUMBER_CONVERTER_LIBRARY NAMES number_converter PATHS ${NUMBER_CONVERTER_DIR}/lib NO_DEFAULT_PATH REQUIRED)
 
+## ranges
+set(RANGES_DIR ${DEPS_DIR}/ranges)
+find_library(RANGES_LIBRARY NAMES ranges PATHS ${RANGES_DIR}/lib NO_DEFAULT_PATH REQUIRED)
+
+## trie
+set(TRIE_DIR ${DEPS_DIR}/trie)
 
 include_directories("src/exceptions") #..
 include_directories("include/language") #..
@@ -46,7 +52,7 @@ add_library(${PROJECT_NAME}_reader STATIC ${READER_SOURCES})
 target_include_directories(${PROJECT_NAME}_reader PRIVATE "${READER_DIR}/internal")
 target_include_directories(${PROJECT_NAME}_reader INTERFACE "${READER_DIR}/interface")
 
-target_include_directories(${PROJECT_NAME}_reader PRIVATE ${CODEC_DIR}/include)#..
+target_include_directories(${PROJECT_NAME}_reader PRIVATE ${CODEC_DIR}/include)
 target_link_libraries(${PROJECT_NAME}_reader PUBLIC ${CODEC_LIBRARY}) # 资源会浪费吗？
 
 ## scanner
@@ -61,8 +67,13 @@ target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SCANNER_DIR}/inter
 
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${CODEC_DIR}/include)
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE deps/number_converter/include)
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_DIR}/include)
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_LIBRARY})
+
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${RANGES_DIR}/include)
+target_link_libraries(${PROJECT_NAME}_scanner PUBLIC ${RANGES_LIBRARY})
+
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${TRIE_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_reader)
