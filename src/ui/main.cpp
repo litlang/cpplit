@@ -7,12 +7,11 @@
 
 #include <locale>
 
-#include "exceptions/exception.hpp"
+#include "exception.hpp"
 #include "exceptions/command_errors.hpp"
 
 
 #include "scanner.hpp"
-#include "exceptions/lex_errors.hpp"
 
 #include "parser.hpp"
 #include "ast/node.hpp"
@@ -20,7 +19,6 @@
 #include "semantic/class.hpp"
 #include "semantic/environment.hpp"
 
-#include "utils/ranges.hpp"
 #include "losh.hpp"
 
 #include "helper/helper.hpp"
