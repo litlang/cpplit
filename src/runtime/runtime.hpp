@@ -2,8 +2,8 @@
 
 #include <filesystem>
 
-#include "utils/project.hpp"
-#include "language/language.hpp" //!
+#include "project.hpp"
+#include "language.hpp"
 
 struct runtime {
 	std::wstring filepath;

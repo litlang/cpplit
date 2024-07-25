@@ -33,7 +33,7 @@ find_library(RANGES_LIBRARY NAMES ranges PATHS ${RANGES_DIR}/lib NO_DEFAULT_PATH
 set(TRIE_DIR ${DEPS_DIR}/trie)
 
 include_directories("src/exceptions") #..
-include_directories("include/language") #..
+include_directories("src/language") #..
 
 # sources
 set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
@@ -65,7 +65,6 @@ target_include_directories(${PROJECT_NAME}_scanner INTERFACE "${SCANNER_DIR}/int
 target_include_directories(${PROJECT_NAME}_scanner PUBLIC "${SCANNER_DIR}/include")
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SCANNER_DIR}/internal")
 
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE include) # utils
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${CODEC_DIR}/include)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_DIR}/include)
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_LIBRARY})
@@ -89,7 +88,6 @@ target_include_directories(${PROJECT_NAME}_parser PUBLIC "${PARSER_DIR}/include"
 target_include_directories(${PROJECT_NAME}_parser PRIVATE "${PARSER_DIR}/internal")
 
 target_include_directories(${PROJECT_NAME}_parser PRIVATE src/scanner/internal) #utils/position
-target_include_directories(${PROJECT_NAME}_parser PRIVATE include) #runtime
 target_include_directories(${PROJECT_NAME}_parser PRIVATE ${CODEC_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)
@@ -104,8 +102,10 @@ add_library(${PROJECT_NAME}_ast STATIC ${AST_SOURCES})
 target_include_directories(${PROJECT_NAME}_ast PUBLIC "${AST_DIR}/include")
 target_include_directories(${PROJECT_NAME}_ast PRIVATE "${AST_DIR}/internal")
 
+target_include_directories(${PROJECT_NAME}_ast PUBLIC "src/runtime")
+target_include_directories(${PROJECT_NAME}_ast PUBLIC "src/project")
+
 target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_tokens)
-target_include_directories(${PROJECT_NAME}_ast PRIVATE include) #..
 
 target_include_directories(${PROJECT_NAME}_ast PRIVATE ${CODEC_DIR}/include)
 
@@ -114,20 +114,19 @@ file(GLOB_RECURSE SEMANTIC_SOURCES "${SOURCE_DIR}/semantic/*.cpp")
 list(FILTER SEMANTIC_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 add_library(${PROJECT_NAME}_semantic STATIC ${SEMANTIC_SOURCES})
 target_include_directories(${PROJECT_NAME}_semantic PUBLIC "${SOURCE_DIR}/semantic/include")
-target_include_directories(${PROJECT_NAME}_semantic PRIVATE include) #..utils
 
 target_include_directories(${PROJECT_NAME}_semantic PRIVATE ${CODEC_DIR}/include) # or link library?
 
 target_include_directories(${PROJECT_NAME}_semantic PUBLIC ${GMP_DIR}/include) #..
 target_link_libraries(${PROJECT_NAME}_semantic PRIVATE ${GMP_LIBRARY}) #gmpxx?
 
+
+## ui
 file(GLOB_RECURSE UI_SOURCES "${SOURCE_DIR}/ui/*.cpp")
 list(FILTER UI_SOURCES EXCLUDE REGEX ".*old\\.cpp$")
 
 add_executable(${PROJECT_NAME} ${UI_SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE "include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}/ui/include")
-
 
 target_link_libraries(${PROJECT_NAME}_ast PRIVATE ${PROJECT_NAME}_semantic)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_ast)

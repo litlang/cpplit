@@ -3,8 +3,8 @@
 #include "semantic/class.hpp"
 #include "semantic/environment.hpp"
 
-#include "utils/path.hpp"
-#include "utils/project.hpp"
+#include "path.hpp"
+#include "project.hpp"
 
 #include "runtime.hpp"
 
