@@ -3,7 +3,7 @@
 #include <string>
 
 #include "exception.hpp"
-#include "utils/position.hpp"
+#include "position.hpp"
 
 #include "tokens/symbol.hpp"
 

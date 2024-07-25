@@ -16,7 +16,7 @@
 
 #include "ranges.hpp"
 
-#include "utils/position.hpp"
+#include "position.hpp"
 #include "trie.hpp"
 
 ranges identifier_charset = {

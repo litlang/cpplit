@@ -88,7 +88,8 @@ target_include_directories(${PROJECT_NAME}_parser INTERFACE "${PARSER_DIR}/inter
 target_include_directories(${PROJECT_NAME}_parser PUBLIC "${PARSER_DIR}/include")
 target_include_directories(${PROJECT_NAME}_parser PRIVATE "${PARSER_DIR}/internal")
 
-target_include_directories(${PROJECT_NAME}_parser PRIVATE include) #utils/position
+target_include_directories(${PROJECT_NAME}_parser PRIVATE src/scanner/internal) #utils/position
+target_include_directories(${PROJECT_NAME}_parser PRIVATE include) #runtime
 target_include_directories(${PROJECT_NAME}_parser PRIVATE ${CODEC_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)

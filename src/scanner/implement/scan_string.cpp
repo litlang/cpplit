@@ -5,7 +5,7 @@
 #include "scan_string.hpp"
 #include "numcvt.hpp"
 
-#include "utils/position.hpp"
+#include "position.hpp"
 
 std::set<wchar_t> head_set = {
 
