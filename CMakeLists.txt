@@ -143,16 +143,12 @@ target_link_libraries(${PROJECT_NAME} ${LOSH_LIBRARY})
 
 target_link_libraries(${PROJECT_NAME} ${GMPXX_LIBRARY} ${GMP_LIBRARY}) # ui temp?
 
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-static" LINK_SEARCH_START_STATIC TRUE LINK_SEARCH_END_STATIC TRUE)
-endif()
-
 install(
   TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_scanner ${PROJECT_NAME}_parser
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
+  # INCLUDES DESTINATION include
 )
 install(DIRECTORY src/scanner/include/ src/scanner/interface/ DESTINATION include/scanner)
 install(DIRECTORY src/parser/include/ src/parser/interface/ DESTINATION include/parser)

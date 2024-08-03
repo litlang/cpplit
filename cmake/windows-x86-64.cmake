@@ -1,0 +1,1 @@
+include(${CMAKE_CURRENT_LIST_DIR}/static_link_libstdcxx.cmake)

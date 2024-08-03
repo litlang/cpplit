@@ -1,0 +1,461 @@
+name: CMake on multiple platforms
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-linux-x86-64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    # checkout dependencies
+    - name: checkout deps-gmp
+      id: cache-gmp
+      uses: actions/cache@v3
+      with:
+        key: gmp-linux-x86-64
+        path: deps/gmp
+
+    - name: checkout deps-codec
+      id: cache-codec
+      uses: actions/cache@v3
+      with:
+        key: codec-linux-x86-64
+        path: deps/codec
+
+    - name: checkout deps-losh
+      id: cache-losh
+      uses: actions/cache@v3
+      with:
+        key: losh-linux-x86-64
+        path: deps/losh
+
+    - name: checkout deps-number_converter
+      id: cache-number_converter
+      uses: actions/cache@v3
+      with:
+        key: number_converter-linux-x86-64
+        path: deps/number_converter
+
+    - name: checkout deps-ranges
+      id: cache-ranges
+      uses: actions/cache@v3
+      with:
+        key: ranges-linux-x86-64
+        path: deps/ranges
+
+    - name: checkout deps-trie
+      id: cache-trie
+      uses: actions/cache@v3
+      with:
+        key: trie-linux-x86-64
+        path: deps/trie
+
+    - name: download dependencies
+      run: >
+        mkdir -p deps;
+
+    - name: download gmp
+      if: steps.cache-gmp.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/gmp/linux-x86-64.zip -o gmp.zip;
+        unzip gmp.zip -d gmp;
+        rm gmp.zip;
+
+    - name: download codec
+      if: steps.cache-codec.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/linux-x86-64.zip -o codec.zip;
+        unzip codec.zip -d codec;
+        rm codec.zip;
+
+    - name: download losh
+      if: steps.cache-losh.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/losh/linux-x86-64.zip -o losh.zip;
+        unzip losh.zip -d losh;
+        rm losh.zip;
+
+    - name: download number_converter
+      if: steps.cache-number_converter.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/number_converter/linux-x86-64.zip -o number_converter.zip;
+        unzip number_converter.zip -d number_converter;
+        rm number_converter.zip;
+
+    - name: download ranges
+      if: steps.cache-ranges.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/ranges/linux-x86-64.zip -o ranges.zip;
+        unzip ranges.zip -d ranges;
+        rm ranges.zip;
+
+    - name: download trie
+      if: steps.cache-trie.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/trie/linux-x86-64.zip -o trie.zip;
+        unzip trie.zip -d trie;
+        rm trie.zip;
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
+        make install;
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+        name: lit-linux-x86-64-release
+        path: dist/*
+
+  build-windows-x86-64:
+    runs-on: windows-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    # checkout dependencies
+    - name: checkout deps-gmp
+      id: cache-gmp
+      uses: actions/cache@v3
+      with:
+        key: gmp-windows-x86-64
+        path: deps/gmp
+
+    - name: checkout deps-codec
+      id: cache-codec
+      uses: actions/cache@v3
+      with:
+        key: codec-windows-x86-64
+        path: deps/codec
+
+    - name: checkout deps-losh
+      id: cache-losh
+      uses: actions/cache@v3
+      with:
+        key: losh-windows-x86-64
+        path: deps/losh
+
+    - name: checkout deps-number_converter
+      id: cache-number_converter
+      uses: actions/cache@v3
+      with:
+        key: number_converter-windows-x86-64
+        path: deps/number_converter
+
+    - name: checkout deps-ranges
+      id: cache-ranges
+      uses: actions/cache@v3
+      with:
+        key: ranges-windows-x86-64
+        path: deps/ranges
+
+    - name: checkout deps-trie
+      id: cache-trie
+      uses: actions/cache@v3
+      with:
+        key: trie-windows-x86-64
+        path: deps/trie
+
+    - name: download dependencies
+      run: >
+        mkdir -force deps
+      
+    - name: download gmp
+      if: steps.cache-gmp.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/gmp/windows-x86-64.zip -OutFile gmp.zip;
+        Expand-Archive -Path "gmp.zip";
+        rm gmp.zip;
+
+    - name: download codec
+      if: steps.cache-codec.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/windows-x86-64.zip -OutFile codec.zip;
+        Expand-Archive -Path "codec.zip";
+        rm codec.zip;
+
+    - name: download losh
+      if: steps.cache-losh.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/losh/windows-x86-64.zip -OutFile losh.zip;
+        Expand-Archive -Path "losh.zip";
+        rm losh.zip;
+
+    - name: download number_converter
+      if: steps.cache-number_converter.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/number_converter/windows-x86-64.zip -OutFile number_converter.zip;
+        Expand-Archive -Path "number_converter.zip";
+        rm number_converter.zip;
+
+    - name: download ranges
+      if: steps.cache-ranges.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/ranges/windows-x86-64.zip -OutFile ranges.zip;
+        Expand-Archive -Path "ranges.zip";
+        rm ranges.zip;
+
+    - name: download trie
+      if: steps.cache-trie.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/trie/windows-x86-64.zip -OutFile trie.zip;
+        Expand-Archive -Path "trie.zip";
+        rm trie.zip;
+
+    - name: build
+      run: >
+        cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_TOOLCHAIN_FILE='cmake/windows-x86-64.cmake' -G "Unix Makefiles";
+        make install;
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+        name: lit-windows-x86-64-release
+        path: dist/*
+
+  build-macos-arm-64:
+    runs-on: macos-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    # checkout dependencies
+    - name: checkout deps-gmp
+      id: cache-gmp
+      uses: actions/cache@v3
+      with:
+        key: gmp-macos-arm-64
+        path: deps/gmp
+
+    - name: checkout deps-codec
+      id: cache-codec
+      uses: actions/cache@v3
+      with:
+        key: codec-macos-arm-64
+        path: deps/codec
+
+    - name: checkout deps-losh
+      id: cache-losh
+      uses: actions/cache@v3
+      with:
+        key: losh-macos-arm-64
+        path: deps/losh
+
+    - name: checkout deps-number_converter
+      id: cache-number_converter
+      uses: actions/cache@v3
+      with:
+        key: number_converter-macos-arm-64
+        path: deps/number_converter
+
+    - name: checkout deps-ranges
+      id: cache-ranges
+      uses: actions/cache@v3
+      with:
+        key: ranges-macos-arm-64
+        path: deps/ranges
+
+    - name: checkout deps-trie
+      id: cache-trie
+      uses: actions/cache@v3
+      with:
+        key: trie-macos-arm-64
+        path: deps/trie
+
+    - name: download dependencies
+      run: >
+        mkdir -p deps;
+          
+    - name: download gmp
+      if: steps.cache-gmp.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        wget https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/gmp/macos-arm-64.zip -O gmp.zip;
+        unzip gmp.zip -d gmp;
+        rm gmp.zip;
+
+    - name: download codec
+      if: steps.cache-codec.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/macos-arm-64.zip -o codec.zip;
+        unzip codec.zip -d codec;
+        rm codec.zip;
+
+    - name: download losh
+      if: steps.cache-losh.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/losh/macos-arm-64.zip -o losh.zip;
+        unzip losh.zip -d losh;
+        rm losh.zip;
+
+    - name: download number_converter
+      if: steps.cache-number_converter.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/number_converter/macos-arm-64.zip -o number_converter.zip;
+        unzip number_converter.zip -d number_converter;
+        rm number_converter.zip;
+
+    - name: download ranges
+      if: steps.cache-ranges.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/ranges/macos-arm-64.zip -o ranges.zip;
+        unzip ranges.zip -d ranges;
+        rm ranges.zip;
+
+    - name: download trie
+      if: steps.cache-trie.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/trie/macos-arm-64.zip -o trie.zip;
+        unzip trie.zip -d trie;
+        rm trie.zip;
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
+        make install;
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+        name: lit-macos-arm-64-release
+        path: dist/*
+
+  build-android-arm-64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    # checkout dependencies
+    - name: checkout deps-gmp
+      id: cache-gmp
+      uses: actions/cache@v3
+      with:
+        key: gmp-android-arm-64
+        path: deps/gmp
+
+    - name: checkout deps-codec
+      id: cache-codec
+      uses: actions/cache@v3
+      with:
+        key: codec-android-arm-64
+        path: deps/codec
+
+    - name: checkout deps-losh
+      id: cache-losh
+      uses: actions/cache@v3
+      with:
+        key: losh-android-arm-64
+        path: deps/losh
+
+    - name: checkout deps-number_converter
+      id: cache-number_converter
+      uses: actions/cache@v3
+      with:
+        key: number_converter-android-arm-64
+        path: deps/number_converter
+
+    - name: checkout deps-ranges
+      id: cache-ranges
+      uses: actions/cache@v3
+      with:
+        key: ranges-android-arm-64
+        path: deps/ranges
+
+    - name: checkout deps-trie
+      id: cache-trie
+      uses: actions/cache@v3
+      with:
+        key: trie-android-arm-64
+        path: deps/trie
+
+    - name: download dependencies
+      run: >
+        mkdir -p deps;
+
+    - name: download gmp
+      if: steps.cache-gmp.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/gmp/android-arm-64.zip -o gmp.zip;
+        unzip gmp.zip -d gmp;
+        rm gmp.zip;
+
+    - name: download codec
+      if: steps.cache-codec.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/android-arm-64.zip -o codec.zip;
+        unzip codec.zip -d codec;
+        rm codec.zip;
+
+    - name: download losh
+      if: steps.cache-losh.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/losh/android-arm-64.zip -o losh.zip;
+        unzip losh.zip -d losh;
+        rm losh.zip;
+
+    - name: download number_converter
+      if: steps.cache-number_converter.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/number_converter/android-arm-64.zip -o number_converter.zip;
+        unzip number_converter.zip -d number_converter;
+        rm number_converter.zip;
+
+    - name: download ranges
+      if: steps.cache-ranges.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/ranges/android-arm-64.zip -o ranges.zip;
+        unzip ranges.zip -d ranges;
+        rm ranges.zip;
+
+    - name: download trie
+      if: steps.cache-trie.outputs.cache-hit != 'true'
+      run: >
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/trie/android-arm-64.zip -o trie.zip;
+        unzip trie.zip -d trie;
+        rm trie.zip;
+
+    - name: setup android sdk
+      uses: nttld/setup-ndk@v1
+      id: setup-ndk
+      with:
+        ndk-version: r26d
+        add-to-path: false
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_TOOLCHAIN_FILE=cmake/android-arm-64.cmake -DANDROID_NDK_HOME=${{steps.setup-ndk.outputs.ndk-path}} .;
+        make install;
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+        name: lit-android-arm-64-release
+        path: dist/*
