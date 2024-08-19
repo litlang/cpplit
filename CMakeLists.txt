@@ -65,6 +65,8 @@ target_include_directories(${PROJECT_NAME}_scanner INTERFACE "${SCANNER_DIR}/int
 target_include_directories(${PROJECT_NAME}_scanner PUBLIC "${SCANNER_DIR}/include")
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SCANNER_DIR}/internal")
 
+target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SOURCE_DIR}/char_stream/include")
+
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${CODEC_DIR}/include)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_DIR}/include)
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_LIBRARY})

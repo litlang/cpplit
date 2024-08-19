@@ -1,20 +1,22 @@
+#pragma once
+
 #include "char_stream.hpp"
 
-class file_char_stream : public char_stream {
+class string_char_stream : public char_stream {
 public:
-	file_char_stream(std::wstring data) : data(data), length(data.length()) {};
+	string_char_stream(std::wstring data) : data(data), length(data.length()) {};
 
 	wchar_t peek() {
 		return this->data[this->index];
 	}
 
 	wchar_t get() {
-		wchar_t result = this->get();
+		wchar_t result = this->peek();
 		this->next();
 		return result;
 	}
 
-	bool is_end() {
+	bool is_end() { // has_next
 		if (this->index == this->length) {
 			return true;
 		}
@@ -23,12 +25,15 @@ public:
 		}
 	}
 
-protected:
 	void next() {
 		this->index += 1;
 		if (this->index > length) {
 			throw "error: index out of range";
 		}
+	}
+
+	int get_pos() { // temp
+		return this->index;
 	}
 
 private:

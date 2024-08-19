@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "tokens/token_list.hpp"
 #include "scan_string.hpp"
@@ -17,6 +18,9 @@
 
 #include "position.hpp"
 #include "trie.hpp"
+
+#include "char_stream.hpp"
+#include "string_char_stream.hpp"
 
 ranges identifier_charset = {
 
@@ -159,106 +163,130 @@ trie<token_symbol::type> symbol_map = {
 
 };
 
+std::unordered_set<wchar_t> ignore_charset = {
+	L' ',
+	L'\t',
+};
+
+std::unordered_set<wchar_t> EOL_charset = {
+	L'\u000A', // LF
+	L'\u000D', // CR
+	L'\u0085', // NEL
+};
+
+/* // last by 1
 template class trie<bool>;
 trie<bool> ignore_set = {
 	{ L" ", true },
 	{ L"\t", true },
 };
-
-/*
+*/
+/* // last by 2
 trie ignore_set = {
 	L" ",
 	L"\t",
 };
 */
 
+std::unordered_set<wchar_t> string_head_set = {
+// global
+	L'\'',
+	L'"',
+};
+
 token_list scan(std::wstring filepath) {
 
 	std::vector<token*> Token_list;
-	std::wstring src = read(filepath, codec_type::UTF_8);
+	char_stream* src = new string_char_stream(read(filepath, codec_type::UTF_8));
 
-	Token_list.push_back(new token_symbol {token_symbol::type::BOF_, 0, 0});
+	Token_list.push_back(new token_symbol {token_symbol::type::BOF_, 0, 0}); //
 
-	int length = src.length();
+	// int length = src.length();
 
-	for (int i = 0; i < length; ) {
+	while (!src->is_end()) {
 
-		int begin = i;
+		int begin = src->get_pos();
 
 		// comments.sharp_comments
-		if (src[i] == L'#') {
+		if (src->peek() == L'#') {
 
 			do {
-				i += 1;
-				if (i >= length) {
-					throw new unterminated_comments { filepath, position_format(src, i) };
-				}
-			} while (src[i] != L'#');
-			i += 1;
+				src->next();
+				// if (i >= length) {
+				// 	throw new unterminated_comments { filepath, position_format(src, i) };
+				// }
+			} while (src->peek() != L'#');
+			src->next();
 		}
 
 		// comments.single_line
-		else if (src.substr(i, 2) == L";;") {
-			i += 2;
-			while (i < length && src[i] != L'\n') { //
-				i += 1;
+		else if (src->peek() == L';') {
+			src->next(); // if reaches end
+			if (src->peek() == L';') {
+				while (!src->is_end() && src->peek() != L'\n') { //
+					src->next();
+				}
+			}
+			else {
+				Token_list.push_back(new token_symbol {token_symbol::type::SEMICOLON, begin, src->get_pos()});
 			}
 		}
 
 		// whitespace (ignored character)
-		else if (auto _ = ignore_set.search(src, i)) { // `v
-			// pass
+		else if (ignore_charset.find(src->peek()) != ignore_charset.end()) { // `v
+			src->next();
 		}
 
 		// EOL
-		else if (src[i] == L'\u000A' || src[i] == L'\u000D' || src[i] == L'\u0085') { // LF || CR || NEL
+		else if (EOL_charset.find(src->peek()) != EOL_charset.end()) {
 			do {
-				i += 1;				
-			} while (src[i] == L'\u000A' || src[i] == L'\u000D' || src[i] == L'\u0085');
-			Token_list.push_back(new token_symbol {token_symbol::type::EOL_, begin, i});
+				src->next();			
+			} while (EOL_charset.find(src->peek()) != EOL_charset.end());
+			Token_list.push_back(new token_symbol {token_symbol::type::EOL_, begin, src->get_pos()});
 		}
 
 		// escape
-		else if (src[i] == L'`') {
-			i += 1;
-			if (src[i] == L'\n') {
-				i += 1;
+		else if (src->peek() == L'`') {
+			src->next();
+			if (src->peek() == L'\n') {
+				src->next();
 			}
 			// else if '`x837' 汉字标识符
 			else {
-				throw new invalid_escape { filepath, position_format(src, i) };
+				// throw new invalid_escape { filepath, position_format(src, i) };
+				throw "invalid_escape";
 			}
 		}
 
 		// string
-		else if (string_head_matched(src[i])) {
-			Token_list.push_back(lex_string(src, i, filepath));
+		else if (string_head_set.find(src->peek()) != string_head_set.end()) {
+			Token_list.push_back(scan_string(src, filepath));
 		}
 
 		// entity.literal.number
-		else if (digit_charset.include(src[i])) {
-			// int val = cvt_dec(src, i);
+		else if (digit_charset.include(src->peek())) {
 			std::wstring val;
 			do {
-				val += src[i];
-				i += 1;
-			} while (digit_charset.include(src[i]));
-			Token_list.push_back(new token_number { encode(val), begin, i }); //!
+				val += src->get();
+			} while (digit_charset.include(src->peek()));
+			Token_list.push_back(new token_number { encode(val), begin, src->get_pos() }); //!
 		}
 
 		// entity.identifier || keyword || literal
-		else if (identifier_charset.include(src[i])) {
+		else if (identifier_charset.include(src->peek())) {
 
 			std::wstring val;
+			wchar_t prev = L' ';
 
 			do {
 
-				if (src[i] != L' ' || src[i-1] != L' ') {
-					val += src[i];
+				wchar_t current = src->get();
+				if (current != L' ' || prev != L' ') {
+					val += current;
+					prev = current;
 				}
-				i += 1;
 
-			} while(i < length && identifier_charset.include(src[i]));
+			} while(!src->is_end() && identifier_charset.include(src->peek()));
 
 			// remove back spaces
 			if (val[val.length()-1] == L' ') {
@@ -266,29 +294,38 @@ token_list scan(std::wstring filepath) {
 			}
 
 			if (keyword_map.find(val) != keyword_map.end()) { // is keyword
-				Token_list.push_back(new token_keyword { keyword_map[val], begin, i});
+				Token_list.push_back(new token_keyword { keyword_map[val], begin, src->get_pos()});
 			}
 			else if (literal_bool_map.find(val) != literal_bool_map.end()) {
-				Token_list.push_back(new token_boolean { literal_bool_map[val], begin, i });
+				Token_list.push_back(new token_boolean { literal_bool_map[val], begin, src->get_pos() });
 			}
 			else { // is identifier
-				Token_list.push_back(new token_identifier {val, begin, i});
+				Token_list.push_back(new token_identifier {val, begin, src->get_pos()});
 			}
 
 		}
 
 		// token.symbol
-		else if (auto val = symbol_map.search(src, i)) {
-			Token_list.push_back(new token_symbol { *val, begin, i });
+		else if (symbol_map.has(src->peek())) {
+			wchar_t c = src->get();
+			auto t = symbol_map.get(c);
+
+			while (!src->is_end() && t->has(src->peek())) { //! after is_end no peek?
+				c = src->get();
+				t = t->get(c);
+			}
+
+			Token_list.push_back(new token_symbol { *t->val, begin, src->get_pos() });
 		}
 
 		else {
-			throw new invalid_character { filepath, position_format(src, i), src[i] };
+			// throw new invalid_character { filepath, position_format(src, i), src[i] };
+			throw "invalid character";
 		}
 
 	}
 
-	Token_list.push_back(new token_symbol {token_symbol::type::EOF_, length, length});
+	Token_list.push_back(new token_symbol {token_symbol::type::EOF_, src->get_pos(), src->get_pos()});
 	return token_list { Token_list };
 
 }
