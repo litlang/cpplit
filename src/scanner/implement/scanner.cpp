@@ -18,9 +18,6 @@
 #include "position.hpp"
 #include "trie.hpp"
 
-#include "char_stream.hpp"
-#include "string_char_stream.hpp"
-
 ranges identifier_charset = {
 
 	{ 65, 90 },  // A-Z

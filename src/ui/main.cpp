@@ -28,7 +28,7 @@
 
 #include <gmpxx.h>
 
-#include "reader.hpp"
+#include "reader/read_file.hpp"
 #include "char_stream.hpp"
 #include "string_char_stream.hpp"
 
@@ -81,8 +81,8 @@ int main(int argc, char** args) {
 
             // bool color;
             
-            char_stream* Char_stream = new string_char_stream(read(filepath, codec_type::UTF_8));
-            std::wstring o = scan(Char_stream).view();
+            string_char_stream Char_stream = read_file(filepath, codec_type::UTF_8);
+            std::wstring o = scan(&Char_stream).view();
             std::wcout << o << std::endl;                
         
         }
@@ -97,8 +97,8 @@ int main(int argc, char** args) {
                 throw new missing_argument { L"filepath" };
             }
             
-            char_stream* Char_stream = new string_char_stream(read(filepath, codec_type::UTF_8));
-            token_list Token_list = scan(Char_stream);
+            string_char_stream Char_stream = read_file(filepath, codec_type::UTF_8);
+            token_list Token_list = scan(&Char_stream);
             node* ast = parse_exe(Token_list);
             std::wstring o = ast->view();
             std::wcout << o;
@@ -120,8 +120,8 @@ int main(int argc, char** args) {
             Runtime.working_directory = std::filesystem::current_path();
             Runtime.debug.lang = language::en_us;
 
-            char_stream* Char_stream = new string_char_stream(read(filepath, codec_type::UTF_8));
-            token_list Token_list = scan(Char_stream);
+            string_char_stream Char_stream = read_file(filepath, codec_type::UTF_8);
+            token_list Token_list = scan(&Char_stream);
             statement* ast = parse_exe(Token_list);
 
             auto env = environment {};
