@@ -65,7 +65,7 @@ target_include_directories(${PROJECT_NAME}_scanner INTERFACE "${SCANNER_DIR}/int
 target_include_directories(${PROJECT_NAME}_scanner PUBLIC "${SCANNER_DIR}/include")
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SCANNER_DIR}/internal")
 
-target_include_directories(${PROJECT_NAME}_scanner PRIVATE "${SOURCE_DIR}/char_stream/include")
+target_include_directories(${PROJECT_NAME}_scanner PUBLIC "${SOURCE_DIR}/char_stream/include")
 
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${CODEC_DIR}/include)
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${NUMBER_CONVERTER_DIR}/include)
@@ -77,7 +77,6 @@ target_link_libraries(${PROJECT_NAME}_scanner PUBLIC ${RANGES_LIBRARY})
 target_include_directories(${PROJECT_NAME}_scanner PRIVATE ${TRIE_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_tokens)
-target_link_libraries(${PROJECT_NAME}_scanner PRIVATE ${PROJECT_NAME}_reader)
 
 ## parser
 set(PARSER_DIR "${SOURCE_DIR}/parser")
@@ -93,7 +92,6 @@ target_include_directories(${PROJECT_NAME}_parser PRIVATE src/scanner/internal) 
 target_include_directories(${PROJECT_NAME}_parser PRIVATE ${CODEC_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_tokens)
-target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_scanner)
 
 ## ast
 set(AST_DIR "${SOURCE_DIR}/ast")
@@ -135,6 +133,7 @@ target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_ast)
 target_link_libraries(${PROJECT_NAME}_parser PRIVATE ${PROJECT_NAME}_semantic)
 
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_semantic) #utils/call_method need
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_reader) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_scanner) #ui/main
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_parser)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_tokens) #ui/main

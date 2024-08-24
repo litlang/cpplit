@@ -7,7 +7,6 @@
 #include "scan_string.hpp"
 
 #include "codec.hpp"
-#include "reader.hpp"
 
 #include "tokens/keyword.hpp"
 #include "tokens/symbol.hpp"
@@ -194,14 +193,11 @@ std::unordered_set<wchar_t> string_head_set = {
 	L'"',
 };
 
-token_list scan(std::wstring filepath) {
+token_list scan(char_stream* src) {
 
 	std::vector<token*> Token_list;
-	char_stream* src = new string_char_stream(read(filepath, codec_type::UTF_8));
 
 	Token_list.push_back(new token_symbol {token_symbol::type::BOF_, 0, 0}); //
-
-	// int length = src.length();
 
 	while (!src->is_end()) {
 
@@ -260,6 +256,7 @@ token_list scan(std::wstring filepath) {
 
 		// string
 		else if (string_head_set.find(src->peek()) != string_head_set.end()) {
+			std::wstring filepath = L".lit"; //
 			Token_list.push_back(scan_string(src, filepath));
 		}
 

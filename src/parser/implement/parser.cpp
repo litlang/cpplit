@@ -1,11 +1,7 @@
-#include "scanner.hpp"
-
 #include "parse_statement_block.hpp"
 
-statement_block* parse_exe(std::wstring filepath) { // parse main program
-	token_list Token_list = scan(filepath);
-	int index = 1; // pass BOF
-	Token_list.fetch();
+statement_block* parse_exe(token_list Token_list) { // parse main program
+	Token_list.fetch(); // temp pass BOF
 	
 	return parse_statements(Token_list, token_symbol::type::EOF_);
 }
