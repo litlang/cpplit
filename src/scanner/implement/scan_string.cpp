@@ -1,4 +1,4 @@
-#include <set>
+#include <unordered_set>
 
 #include "exceptions/lex_errors.hpp"
 
@@ -7,7 +7,7 @@
 
 #include "position.hpp"
 
-std::set<wchar_t> head_set = {
+std::unordered_set<wchar_t> head_set = {
 
 // global
 	L'\'',
@@ -204,4 +204,16 @@ token_string* lex_string(std::wstring src, int& i, const std::wstring& filepath)
 	}
 
 	return new token_string {val, begin, i};
+}
+
+token_string* scan_string(char_stream* src, const std::wstring& filepath) {
+	int pos_begin = src->get_pos();
+	wchar_t begin = src->get();
+
+	std::wstring data;
+	while (src->peek() != begin) {
+		data += src->get();
+	}
+	src->next();
+	return new token_string { data, pos_begin, src->get_pos() };
 }

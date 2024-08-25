@@ -27,6 +27,11 @@
 #include "runtime.hpp"
 
 #include <gmpxx.h>
+
+#include "reader/read_file.hpp"
+#include "char_stream.hpp"
+#include "string_char_stream.hpp"
+
 static void test() {
     // 初始化两个大数
     mpz_class a, b, c;
@@ -75,7 +80,9 @@ int main(int argc, char** args) {
             }
 
             // bool color;
-            std::wstring o = scan(filepath).view();
+            
+            string_char_stream Char_stream = read_file(filepath, codec_type::UTF_8);
+            std::wstring o = scan(&Char_stream).view();
             std::wcout << o << std::endl;                
         
         }
@@ -90,7 +97,9 @@ int main(int argc, char** args) {
                 throw new missing_argument { L"filepath" };
             }
             
-            node* ast = parse_exe(filepath);
+            string_char_stream Char_stream = read_file(filepath, codec_type::UTF_8);
+            token_list Token_list = scan(&Char_stream);
+            node* ast = parse_exe(Token_list);
             std::wstring o = ast->view();
             std::wcout << o;
             
@@ -111,7 +120,9 @@ int main(int argc, char** args) {
             Runtime.working_directory = std::filesystem::current_path();
             Runtime.debug.lang = language::en_us;
 
-            auto ast = parse_exe(filepath);
+            string_char_stream Char_stream = read_file(filepath, codec_type::UTF_8);
+            token_list Token_list = scan(&Char_stream);
+            statement* ast = parse_exe(Token_list);
 
             auto env = environment {};
             ast->exec(env, Runtime);
@@ -121,6 +132,10 @@ int main(int argc, char** args) {
                 paths=/path/to/dira&/path/to/dirb/*
             */
 
+        }
+
+        else if (command.is(L"inter")) {
+            std::cout << "interactive interpreter mode";
         }
 
         else if (command.is(L"test")) {

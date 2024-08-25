@@ -4,14 +4,15 @@
 
 #include "exceptions/fserrs.hpp"
 #include "codec.hpp"
+#include "string_char_stream.hpp"
 
-std::wstring read(std::wstring filepath, codec_type Codec_type) {
+string_char_stream read_file(std::wstring filepath, codec_type Codec_type) {
 
 	std::ifstream file(encode(filepath), std::ios::in);
 	std::stringstream buffer;
 	buffer << file.rdbuf();
 	file.close();
-	return decode(buffer.str(), Codec_type);
+	return string_char_stream(decode(buffer.str(), Codec_type));
 }
 
 // std::wstring get_content(std::wstring filepath) {
